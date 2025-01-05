@@ -43,31 +43,38 @@ class AccountServiceImpl @Inject constructor(
         )
     }
 
-    override fun authenticate(
+    override suspend fun authenticate(
         email: String, password: String, onSuccess: (role: String) -> Unit
-    ) {
-        auth
-            .signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                it.user?.let {
-                    db
-                        .collection("profiles")
-                        .document(it.uid)
-                        .get()
-                        .addOnSuccessListener {
-                            currentUserRole = it.getDocumentReference("role")?.id
-                            onSuccess(it.getDocumentReference("role")?.id ?: "unknown")
-                        }
-                } ?: onSuccess("unknown")
+    ): Result<Unit> {
+        return try {
+            val authResult = auth.signInWithEmailAndPassword(email, password).await()
+            val user = authResult.user ?: throw Exception("Authentication failed")
+
+            val profileDoc = db.collection("profiles")
+                .document(user.uid)
+                .get()
+                .await()
+
+            currentUserRole = profileDoc.getDocumentReference("role")?.id
+            onSuccess(currentUserRole ?: "unknown")
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
     override suspend fun register(
-        email: String, password: String, profile: Profile, onSuccess: () -> Unit
-    ) {
-        auth.createUserWithEmailAndPassword(email, password).await()
-        createProfile(currentUserId!!, profile)
-        onSuccess()
+        email: String, password: String, profile: Profile
+    ) : Result<Unit> {
+        return try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+            createProfile(currentUserId!!, profile)
+            Result.success(Unit)
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override fun logout(onSuccess: () -> Unit) {

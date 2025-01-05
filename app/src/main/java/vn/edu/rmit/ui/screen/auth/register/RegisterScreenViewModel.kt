@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 data class RegisterScreenState(
     val roles: List<Role> = emptyList(),
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -47,14 +48,24 @@ constructor(
         email: String,
         password: String,
         onSuccess: () -> Unit
-    ) {
+    ) : Result<Unit> {
         viewModelScope.launch {
-            accountService.register(
-                email, password, Profile(
-                    fullName = name,
-                    role = role,
-                ), onSuccess
-            )
+            try {
+                accountService
+                    .register(
+                        email, password,
+                        Profile(fullName = name, role = role)
+                    )
+                    .onSuccess { onSuccess() }
+                    .onFailure { e -> _uiState.update { state -> e.message?.let { state.copy(error = it) }!! } }
+            } catch (e: Exception) {
+                _uiState.update { state -> e.message?.let { state.copy(error = it) }!! }
+            }
         }
+        return Result.success(Unit)
+    }
+
+    fun resetErrorState() {
+        _uiState.update { state -> state.copy(error = null) }
     }
 }

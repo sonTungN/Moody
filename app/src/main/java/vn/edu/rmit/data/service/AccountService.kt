@@ -10,8 +10,8 @@ interface AccountService {
 
     suspend fun documentToProfile(document: DocumentSnapshot): Profile
 
-    fun authenticate(email: String, password: String, onSuccess: (role: String) -> Unit)
-    suspend fun register(email: String, password: String, profile: Profile, onSuccess: () -> Unit)
+    suspend fun authenticate(email: String, password: String, onSuccess: (role: String) -> Unit): Result<Unit>
+    suspend fun register(email: String, password: String, profile: Profile): Result<Unit>
     fun logout(onSuccess: () -> Unit)
 
     suspend fun getProfile(): Profile?

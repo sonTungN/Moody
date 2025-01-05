@@ -34,8 +34,9 @@ fun LoginForm(
 
     Column(
         modifier = modifier,
+
         verticalArrangement = Arrangement.spacedBy(
-            12.dp,
+            6.dp,
             Alignment.CenterVertically
         )
     ) {
@@ -61,9 +62,12 @@ fun LoginForm(
                 Text(stringResource(R.string.register))
             }, onClick = { onRegisterClick() })
 
-            Button(content = {
-                Text(stringResource(R.string.login))
-            }, onClick = { onLoginClick(email, password) })
+            Button(
+                content = {
+                    Text(stringResource(R.string.login))
+                },
+                enabled = email.isNotBlank() && password.isNotBlank(),
+                onClick = { onLoginClick(email, password) })
         }
     }
 }
