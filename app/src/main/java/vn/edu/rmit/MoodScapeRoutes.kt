@@ -122,6 +122,7 @@ fun MoodScapeRoutes(
 
             composable<VideoPagerRoute> { backStackEntry ->
                 val route: VideoPagerRoute = backStackEntry.toRoute()
+                Log.d("VideoPagerRoute", "selectedMoods: ${route.selectedMoods}")
                 VideoPagerScreen(
                     selectedMoods = route.selectedMoods,
                     onHomeCtaClick = {

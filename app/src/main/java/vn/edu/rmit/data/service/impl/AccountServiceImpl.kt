@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import vn.edu.rmit.data.model.Profile
-import vn.edu.rmit.data.model.Role
+import vn.edu.rmit.data.model.type.Role
 import vn.edu.rmit.data.service.AccountService
 import vn.edu.rmit.data.service.RoleService
 import javax.inject.Inject

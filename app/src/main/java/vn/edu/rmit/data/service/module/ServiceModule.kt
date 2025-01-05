@@ -6,10 +6,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import vn.edu.rmit.data.service.AccountService
 import vn.edu.rmit.data.service.MoodService
+import vn.edu.rmit.data.service.PropertyService
+import vn.edu.rmit.data.service.PropertyTypeService
 import vn.edu.rmit.data.service.RoleService
 import vn.edu.rmit.data.service.VideoService
 import vn.edu.rmit.data.service.impl.AccountServiceImpl
 import vn.edu.rmit.data.service.impl.MoodServiceImpl
+import vn.edu.rmit.data.service.impl.PropertyServiceImpl
+import vn.edu.rmit.data.service.impl.PropertyTypeServiceImpl
 import vn.edu.rmit.data.service.impl.RoleServiceImpl
 import vn.edu.rmit.data.service.impl.VideoServiceImpl
 
@@ -19,15 +23,12 @@ abstract class ServiceModule {
     @Binds
     abstract fun provideAccountService(impl: AccountServiceImpl): AccountService
 
-//    @Binds
-//    abstract fun provideLocationService(impl: LocationServiceImpl): LocationService
-//
-//    @Binds
-//    abstract fun provideDonationService(impl: DonationServiceImpl): DonationService
-//
-//    @Binds
-//    abstract fun provideBloodTypeService(impl: BloodTypeServiceImpl): BloodTypeService
-//
+    @Binds
+    abstract fun providePropertyService(impl: PropertyServiceImpl): PropertyService
+
+    @Binds
+    abstract fun providePropertyTypeService(impl: PropertyTypeServiceImpl): PropertyTypeService
+
     @Binds
     abstract fun provideMoodService(impl: MoodServiceImpl): MoodService
 
@@ -36,10 +37,4 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun provideVideoService(impl: VideoServiceImpl): VideoService
-//
-//    @Binds
-//    abstract fun provideLocationTypeService(impl: LocationTypeServiceImpl): LocationTypeService
-//
-//    @Binds
-//    abstract fun provideNotificationService(impl: NotificationServiceImpl): NotificationService
 }

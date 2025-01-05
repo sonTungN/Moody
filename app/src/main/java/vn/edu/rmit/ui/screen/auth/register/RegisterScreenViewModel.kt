@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import vn.edu.rmit.data.model.Profile
-import vn.edu.rmit.data.model.Role
+import vn.edu.rmit.data.model.type.Role
 import vn.edu.rmit.data.service.AccountService
 import vn.edu.rmit.data.service.RoleService
 import javax.inject.Inject

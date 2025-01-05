@@ -6,10 +6,8 @@ import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import vn.edu.rmit.data.model.Mood
-import vn.edu.rmit.data.model.Role
+import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.data.service.MoodService
-import vn.edu.rmit.data.service.RoleService
 import javax.inject.Inject
 
 class MoodServiceImpl @Inject constructor(

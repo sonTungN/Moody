@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import vn.edu.rmit.data.model.Video
 import vn.edu.rmit.ui.component.button.HomeSmallCta
-import vn.edu.rmit.ui.component.video_di.VideoPlayer
+import vn.edu.rmit.ui.component.video_player.VideoPlayer
 
 @Composable
 fun VideoDetailScreen(
@@ -125,7 +125,7 @@ fun VideoDetail(
             author = "Son Tung",
             videoTitle = video.title,
             description = video.desc,
-            moodTags = video.moodTags.map { it.name },
+            moodTags = video.moodTags.map { it },
             modifier = Modifier.constrainAs(videoInfo) {
                 start.linkTo(parent.start, margin = 16.dp)
                 bottom.linkTo(videoActionBtn.top, margin = 16.dp)

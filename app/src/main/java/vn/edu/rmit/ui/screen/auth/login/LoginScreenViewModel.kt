@@ -1,6 +1,5 @@
 package vn.edu.rmit.ui.screen.auth.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,8 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import vn.edu.rmit.data.model.Profile
-import vn.edu.rmit.data.model.Role
 import vn.edu.rmit.data.service.AccountService
 import javax.inject.Inject
 

@@ -7,5 +7,6 @@ import vn.edu.rmit.data.model.Video
 interface VideoService {
     suspend fun documentToVideo(document: DocumentSnapshot): Video
     suspend fun getVideoById(id: String): Video
+    fun getVideoByPropertyId(propertyId: String): Flow<List<Video>>
     fun getVideos(): Flow<List<Video>>
 }

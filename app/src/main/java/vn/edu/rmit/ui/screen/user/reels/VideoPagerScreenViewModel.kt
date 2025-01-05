@@ -29,9 +29,11 @@ class VideoPagerScreenViewModel @Inject constructor(
     fun loadVideosForMoods(selectedMoods: List<String>) {
         viewModelScope.launch {
             videoService
-                .getVideos().map {
-                    it.filter { video ->
-                        video.moodTags.any { mood -> selectedMoods.contains(mood.id) }
+                .getVideos().map { videos ->
+                    videos.filter { video ->
+                        video.moodTags.any { mood ->
+                            selectedMoods.contains(mood)
+                        }
                     }
                 }
                 .collect { filteredVideos ->

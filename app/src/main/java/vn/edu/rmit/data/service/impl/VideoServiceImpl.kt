@@ -8,35 +8,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.model.Video
 import vn.edu.rmit.data.service.AccountService
 import vn.edu.rmit.data.service.MoodService
+import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.VideoService
 import javax.inject.Inject
 
 class VideoServiceImpl @Inject constructor(
     private val db: FirebaseFirestore,
     val accountService: AccountService,
-    private val moodService: MoodService,
 ) : VideoService {
 
     private val videoRef = db.collection("videos")
 
     override suspend fun documentToVideo(document: DocumentSnapshot): Video {
-        val moods =
-            document.get("moodTags")?.let {
-                (it as List<*>).filterIsInstance<DocumentReference>()
-            } ?: emptyList()
-
         return Video(
             title = document.getString("title") ?: "",
             desc = document.getString("desc") ?: "",
             url = document.getString("url") ?: "",
-            moodTags = moods.map { it ->
-                it.snapshots().map {
-                    moodService.documentToMood(it)
-                }.first()
-            }.toList()
+            propertyId = document.getString("propertyId") ?: "",
+            moodTags = (document.get("mood_tags") as? List<*>)?.mapNotNull {
+                it?.toString()
+            } ?: emptyList()
         )
     }
 
@@ -44,6 +39,15 @@ class VideoServiceImpl @Inject constructor(
         return videoRef.document(id).get().await().let {
             documentToVideo(it)
         }
+    }
+
+    override fun getVideoByPropertyId(propertyId: String): Flow<List<Video>> {
+        return videoRef
+            .whereEqualTo("propertyId", propertyId)
+            .snapshots()
+            .map { snapshot ->
+                snapshot.documents.map { documentToVideo(it) }
+            }
     }
 
     override fun getVideos(): Flow<List<Video>> {

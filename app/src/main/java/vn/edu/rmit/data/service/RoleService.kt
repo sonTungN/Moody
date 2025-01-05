@@ -2,7 +2,7 @@ package vn.edu.rmit.data.service
 
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.Flow
-import vn.edu.rmit.data.model.Role
+import vn.edu.rmit.data.model.type.Role
 
 interface RoleService {
     fun documentToRole(document: DocumentSnapshot): Role

@@ -1,5 +1,7 @@
 package vn.edu.rmit.data.model
 
+import vn.edu.rmit.data.model.type.Role
+
 data class Profile(
     val id: String = "",
     val fullName: String = "",
@@ -8,7 +10,6 @@ data class Profile(
     val profileUrl: String = "",
 
     val role: Role = Role(),
-//    val membershipType: MembershipType = MembershipType(),
 
     val savedLocation: List<String> = emptyList(),
     val booking: List<String> = emptyList(),

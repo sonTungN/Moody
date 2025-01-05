@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import vn.edu.rmit.data.model.Mood
+import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.data.service.MoodService
 import javax.inject.Inject
 
