@@ -40,9 +40,9 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    fun updateSelectedMoods(moods: List<String>) {
-        _uiState.update { currentState ->
-            currentState.copy(selectedMoods = moods)
-        }
-    }
+//    fun updateSelectedMoods(moods: List<String>) {
+//        _uiState.update { currentState ->
+//            currentState.copy(selectedMoods = moods)
+//        }
+//    }
 }

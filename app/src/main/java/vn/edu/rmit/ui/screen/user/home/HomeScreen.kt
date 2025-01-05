@@ -30,7 +30,6 @@ import vn.edu.rmit.ui.theme.AppTypography
 
 @Composable
 fun HomeScreen(
-    selectedMoods: List<String> = emptyList(),
     onLogout: () -> Unit,
     onScheduleClick: () -> Unit,
     onDonationClick: (id: String) -> Unit,
@@ -40,9 +39,9 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(selectedMoods) {
-        viewModel.updateSelectedMoods(selectedMoods)
-    }
+//    LaunchedEffect(selectedMoods) {
+//        viewModel.updateSelectedMoods(selectedMoods)
+//    }
 
     Column(
         modifier = modifier

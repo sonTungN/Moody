@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun MoodTagCard(
@@ -24,17 +25,19 @@ fun MoodTagCard(
     colors: CardColors = CardDefaults.cardColors(),
 ) {
     Card(
+        modifier = modifier,
         colors = colors,
     ) {
         Column(
             modifier = Modifier
-                .padding(vertical = 4.dp, horizontal = 12.dp)
+                .padding(horizontal = 8.dp)
                 .wrapContentWidth(),
             verticalArrangement = Arrangement.Bottom,
         ) {
             Text(
-                content,
+                text = "#$content",
                 style = MaterialTheme.typography.bodyLarge,
+                fontSize = 12.sp
             )
         }
     }
@@ -44,6 +47,6 @@ fun MoodTagCard(
 @Composable
 fun MoodTagCardPreview() {
     MoodTagCard(
-        content = "Happy"
+        content = "Adventurous"
     )
 }

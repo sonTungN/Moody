@@ -33,7 +33,7 @@ object LandingRoute
 object TravelerRoute
 
 @Serializable
-data class HomeRoute (val selectedMoods: List<String> = emptyList())
+object HomeRoute
 
 @Serializable
 object MoodFilterRoute
@@ -112,7 +112,7 @@ fun MoodScapeRoutes(
             composable<MoodFilterRoute> {
                 MoodScreen(
                     onSkip = {
-                        navController.navigate(HomeRoute())
+                        navController.navigate(HomeRoute)
                     },
                     onSelected = { selectedMoodIds ->
                         navController.navigate(VideoPagerRoute(selectedMoodIds))
@@ -122,13 +122,16 @@ fun MoodScapeRoutes(
 
             composable<VideoPagerRoute> { backStackEntry ->
                 val route: VideoPagerRoute = backStackEntry.toRoute()
-                VideoPagerScreen(selectedMoods = route.selectedMoods)
+                VideoPagerScreen(
+                    selectedMoods = route.selectedMoods,
+                    onHomeCtaClick = {
+                        navController.navigate(HomeRoute)
+                    }
+                )
             }
 
-            composable<HomeRoute> { backStackEntry ->
-                val homeRoute: HomeRoute = backStackEntry.toRoute()
+            composable<HomeRoute> {
                 HomeScreen(
-                    selectedMoods = homeRoute.selectedMoods,
                     onScheduleClick = {},
                     onDonationClick = { id -> },
                     onLogout = {

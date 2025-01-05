@@ -19,9 +19,11 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="booking">Booking</string>
-    <string name="save">Saved</string>
+    <string name="save">Save</string>
     <string name="settings">Setting</string>
     <string name="invalid_email">Invalid email format</string>
     <string name="email_already_exists">Email already exists</string>
     <string name="share">Share</string>
+    <string name="view_details">View Details</string>
+    <string name="book">Book</string>
 </resources>

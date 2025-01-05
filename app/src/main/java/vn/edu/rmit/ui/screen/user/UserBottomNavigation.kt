@@ -34,7 +34,7 @@ fun UserBottomNavigation(
             },
             label = { Text(stringResource(R.string.home)) },
             selected = currentScreen == HomeRoute::class.qualifiedName,
-            onClick = { navigate(HomeRoute(emptyList())) }
+            onClick = { navigate(HomeRoute) }
         )
 
         NavigationBarItem(

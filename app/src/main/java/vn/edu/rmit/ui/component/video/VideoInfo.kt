@@ -27,19 +27,13 @@ fun VideoInfo(
         modifier = modifier
     ) {
         Text(
-            text = author,
+            text = videoTitle,
             style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
             fontWeight = FontWeight.Bold
         )
 
         Text(
-            modifier = Modifier.padding(top = 12.dp),
-            text = videoTitle,
-            style = MaterialTheme.typography.titleMedium.copy(color = Color.White),
-            fontWeight = FontWeight.Bold
-        )
-
-        Text(
+            modifier = Modifier.padding(top = 6.dp),
             text = description,
             style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
             maxLines = 2,
