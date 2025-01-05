@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.component.video_di
+package vn.edu.rmit.ui.component.video_player
 
 import android.view.ViewGroup
 import android.widget.FrameLayout

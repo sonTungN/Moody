@@ -1,4 +1,4 @@
-package vn.edu.rmit.data.model
+package vn.edu.rmit.data.model.type
 
 data class MembershipType(
     val id: String = "",
