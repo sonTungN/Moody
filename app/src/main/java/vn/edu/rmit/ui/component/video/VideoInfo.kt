@@ -7,33 +7,59 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import vn.edu.rmit.data.model.Mood
+import vn.edu.rmit.ui.component.MoodTagSection
 
 @Composable
 fun VideoInfo(
-    accountName: String,
-    videoName: String,
+    author: String,
+    videoTitle: String,
     description: String,
     moodTags: List<String>,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-//            .fillMaxWidth()
-//            .padding(16.dp)
     ) {
         Text(
-            text = "@$accountName",
-            style = MaterialTheme.typography.titleMedium,
+            text = author,
+            style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
             fontWeight = FontWeight.Bold
         )
+
+        Text(
+            modifier = Modifier.padding(top = 12.dp),
+            text = videoTitle,
+            style = MaterialTheme.typography.titleMedium.copy(color = Color.White),
+            fontWeight = FontWeight.Bold
+        )
+
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
+
+        MoodTagSection(
+            moodTags = moodTags,
+            modifier = Modifier.padding(top = 12.dp)
+        )
     }
+}
+
+@Preview (showBackground = false)
+@Composable
+fun VideoInfoPreview() {
+    VideoInfo(
+        author = "Son Tung",
+        videoTitle = "Test Title",
+        description = "This is the test description. This is the test description.",
+        moodTags = listOf("Happy", "Sad")
+    )
 }

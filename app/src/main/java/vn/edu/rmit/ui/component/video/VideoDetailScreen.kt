@@ -112,6 +112,7 @@ fun VideoDetail(
             shares = 0,
             onLikeClick = { },
             onCommentClick = { },
+            onSaveClick = {},
             onShareClick = { },
             modifier = Modifier.constrainAs(sideBar) {
                 end.linkTo(parent.end, margin = 16.dp)
@@ -120,8 +121,8 @@ fun VideoDetail(
         )
 
         VideoInfo(
-            accountName = "Son Tung",
-            videoName = video.title,
+            author = "Son Tung",
+            videoTitle = video.title,
             description = video.desc,
             moodTags = video.moodTags.map { it.name },
             modifier = Modifier.constrainAs(videoInfo) {
