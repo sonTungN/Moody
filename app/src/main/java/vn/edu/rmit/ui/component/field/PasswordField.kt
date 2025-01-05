@@ -1,17 +1,21 @@
 package vn.edu.rmit.ui.component.field
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,6 +33,7 @@ fun PasswordField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
     modifier: Modifier = Modifier
 ) {
+    val isError = value.isNotEmpty() && value.length < 6
     var visible by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
@@ -47,19 +52,35 @@ fun PasswordField(
         keyboardOptions = keyboardOptions.copy(
             keyboardType = KeyboardType.Password,
         ),
+        isError = isError,
         trailingIcon = {
-            val image = if (visible)
-                Icons.Filled.Visibility
-            else Icons.Filled.VisibilityOff
+            if (!isError) {
+                val image = if (visible)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
 
-            val description =
-                if (visible) stringResource(R.string.password_hide) else stringResource(R.string.password_show)
+                val description =
+                    if (visible) stringResource(R.string.password_hide) else stringResource(R.string.password_show)
 
-            IconButton(onClick = { visible = !visible }) {
-                Icon(imageVector = image, description)
+                IconButton(onClick = { visible = !visible }) {
+                    Icon(imageVector = image, description)
+                }
+
+            } else {
+                Icon(Icons.Filled.Error, "error",
+                    tint = MaterialTheme.colorScheme.error
+                )
             }
         },
-        isError = value.length < 6
+        supportingText = {
+            if (isError) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "At least 6 characters required",
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
     )
 }
 
