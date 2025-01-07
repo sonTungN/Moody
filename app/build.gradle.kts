@@ -62,54 +62,54 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // NavHost Controller
-    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation(libs.androidx.navigation.compose)
 
     // Route Serializable
     implementation(libs.kotlinx.serialization.json)
 
     // MenuAnchorType
-    implementation("androidx.compose.material3:material3:1.0.0-beta03")
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-beta03")
+    implementation(libs.material3)
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
 
     // Extended Icon
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation(libs.androidx.material.icons.extended)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.53.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.53.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Google Font
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.6")
+    implementation(libs.androidx.ui.text.google.fonts)
 
     // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.androidx.constraintlayout.compose)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     // Authentication
-    implementation("com.google.firebase:firebase-auth")
+    implementation(libs.firebase.auth)
     // FireStore
-    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.firebase.firestore)
 
     // Media3 ExoPLayer
-    implementation("androidx.media3:media3-exoplayer:1.5.1")
-    implementation("androidx.media3:media3-exoplayer-dash:1.5.1")
-    implementation("androidx.media3:media3-ui:1.5.1")
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
 
     // Coil
-    implementation("io.coil-kt.coil3:coil-compose:3.0.4")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     // Map Utils and Service
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
-    implementation("com.google.maps.android:android-maps-utils:3.8.2")
-    implementation("com.google.android.libraries.places:places:4.1.0")
+    implementation(libs.android.maps.utils)
+    implementation(libs.places)
 
-    implementation("com.google.maps:google-maps-services:2.2.0")
+    implementation(libs.google.maps.services)
 }
 
 kapt {

@@ -28,6 +28,7 @@ fun MoodScapeApplication(
     Log.d("Navigation", "Current screen route: $currentScreen")
     Log.d("Navigation", "VideoPager qualified: ${VideoPagerRoute::class.qualifiedName}")
     Log.d("Navigation", "VideoPager simple: ${VideoPagerRoute::class.simpleName}")
+    Log.d("Navigation", "Like to booking: ${InteractionRoute::class.simpleName}")
 
     val uiState by viewModel.uiState.collectAsState()
 

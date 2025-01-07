@@ -3,16 +3,17 @@ package vn.edu.rmit
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import vn.edu.rmit.ui.component.video.VideoActionBar
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.reels.VideoPagerScreen
@@ -40,6 +41,12 @@ object MoodFilterRoute
 
 @Serializable
 data class VideoPagerRoute (val selectedMoods: List<String>)
+
+@Serializable
+data class InteractionRoute (val selectedVideo: String)
+
+@Serializable
+data class BookingRoute (val selectedVideo: String)
 
 @Composable
 fun MoodScapeRoutes(
@@ -131,6 +138,20 @@ fun MoodScapeRoutes(
                 )
             }
 
+            composable<InteractionRoute> { backStackEntry ->
+                val route: InteractionRoute = backStackEntry.toRoute()
+                Log.d("InteractionRoute", "selectedMoods: ${route.selectedVideo}")
+                VideoActionBar(
+                    likes = 0,
+                    comments = 0,
+                    onLikeClick = {
+                        navController.navigate(BookingRoute)
+                    },
+                    onCommentClick = {},
+                    onSaveClick = {}
+                )
+            }
+
             composable<HomeRoute> {
                 HomeScreen(
                     onScheduleClick = {},
@@ -143,6 +164,10 @@ fun MoodScapeRoutes(
                         }
                         onLogoutSuccess()
                     })
+            }
+
+            composable<BookingRoute> {
+                BookingScreen()
             }
         }
 
