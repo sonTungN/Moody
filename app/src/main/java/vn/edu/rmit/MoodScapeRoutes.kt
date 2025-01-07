@@ -140,7 +140,7 @@ fun MoodScapeRoutes(
 
             composable<InteractionRoute> { backStackEntry ->
                 val route: InteractionRoute = backStackEntry.toRoute()
-                Log.d("InteractionRoute", "selectedMoods: ${route.selectedVideo}")
+                Log.d("InteractionRoute", "selectedVid: ${route.selectedVideo}")
                 VideoActionBar(
                     likes = 0,
                     comments = 0,
@@ -167,7 +167,7 @@ fun MoodScapeRoutes(
             }
 
             composable<BookingRoute> {
-                BookingScreen()
+//                BookingScreen()
             }
         }
 
