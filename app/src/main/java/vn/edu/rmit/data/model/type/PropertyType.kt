@@ -4,6 +4,5 @@ import androidx.annotation.DrawableRes
 
 data class PropertyType(
     val id: String = "",
-    val name: String = "",
-    @DrawableRes val image: Int
+    val name: String = ""
 )

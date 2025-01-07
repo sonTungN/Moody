@@ -16,7 +16,7 @@ class PropertyTypeServiceImpl @Inject constructor(
     override fun documentToLocationType(document: DocumentSnapshot): PropertyType {
         return PropertyType(
             id = document.id,
-            name = document.getString("name") ?: "",
+            name = document.getString("name") ?: ""
         )
     }
 

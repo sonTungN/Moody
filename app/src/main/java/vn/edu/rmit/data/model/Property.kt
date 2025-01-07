@@ -8,7 +8,7 @@ import java.time.LocalTime
 data class Property(
     val id: String = "",
     val owner: Profile = Profile(),
-    val types: List<PropertyType>,
+    val type: PropertyType = PropertyType(),
     val name: String = "",
     val address: String = "",
     val geoPoint: LatLng? = null,

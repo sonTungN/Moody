@@ -1,6 +1,5 @@
 package vn.edu.rmit.ui.screen.user.booking
 
-import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,10 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import vn.edu.rmit.R
+import coil3.compose.rememberAsyncImagePainter
 import vn.edu.rmit.data.model.Property
 
 @Composable
@@ -38,18 +35,16 @@ fun BookingScreen(
     ) {
         AccommodationProfile()
         Column(modifier = Modifier.padding(16.dp)) {
-            property.types.forEach { propertyType ->
-                RoomItem(
-                    imageRes = propertyType.image,
-                    roomTitle = propertyType.name
-                )
-            }
+            RoomItem(property, onReservedClick = {  })
         }
     }
 }
 
 @Composable
-fun RoomItem(imageRes: Int, roomTitle: String) {
+fun RoomItem(
+    property: Property,
+    onReservedClick: () -> Unit
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -60,31 +55,27 @@ fun RoomItem(imageRes: Int, roomTitle: String) {
     ) {
         Column {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = roomTitle
+                    text = property.name
                 )
                 Button(
-                    onClick = { }
+                    onClick = onReservedClick
                 ) {
                     Text("Reserve")
                 }
             }
         }
         Image(
-            painter = painterResource(id = imageRes),
+            painter = rememberAsyncImagePainter(property.image),
             contentDescription = "room image",
             contentScale = ContentScale.Crop,
             modifier = Modifier.height(150.dp)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookingScreenPreview() {
-    RoomItem(imageRes = R.drawable.hyatt_regency_danang_resort_and_spa_p372_ocean_view_king_guestroom_16x9, roomTitle = "Ocean View King Guest Room")
 }
