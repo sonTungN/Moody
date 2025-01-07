@@ -25,6 +25,7 @@ class VideoServiceImpl @Inject constructor(
 
     override suspend fun documentToVideo(document: DocumentSnapshot): Video {
         return Video(
+            id = document.id,
             title = document.getString("title") ?: "",
             desc = document.getString("desc") ?: "",
             url = document.getString("url") ?: "",

@@ -65,7 +65,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.5")
 
     // Route Serializable
-    implementation(libs.kotlinx.serialization.json)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0-RC")
 
     // MenuAnchorType
     implementation("androidx.compose.material3:material3:1.0.0-beta03")
@@ -92,6 +92,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // FireStore
     implementation("com.google.firebase:firebase-firestore")
+    // Realtime Database
+    implementation("com.google.firebase:firebase-database")
 
     // Media3 ExoPLayer
     implementation("androidx.media3:media3-exoplayer:1.5.1")

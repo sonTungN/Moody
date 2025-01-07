@@ -8,20 +8,25 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import vn.edu.rmit.data.service.VideoActionService
 import javax.inject.Inject
 
 @HiltViewModel
 class VideoDetailViewModel @OptIn(UnstableApi::class)
 @Inject constructor(
-    val videoPlayer: ExoPlayer
+    val videoPlayer: ExoPlayer,
+    private val videoActionService: VideoActionService,
+    private val auth: FirebaseAuth
 ) : ViewModel() {
 
-    private var _uiState = MutableStateFlow<VideoDetailsIUState>(VideoDetailsIUState.Default)
+    private var _uiState = MutableStateFlow(VideoDetailUiState())
     var uiState = _uiState.asStateFlow()
 
     init {
@@ -29,6 +34,42 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
             repeatMode = REPEAT_MODE_ONE
             playWhenReady = true
             videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+        }
+    }
+
+    fun observeVideoDetailActionStatus(videoId: String) {
+        viewModelScope.launch {
+            videoActionService.observeVideoReactions(videoId).collect {
+                reactCount -> _uiState.update { it.copy(reactCount = reactCount) }
+            }
+        }
+
+        viewModelScope.launch {
+            auth.currentUser?.uid.let { id ->
+                videoActionService.observeUserReactedVideo(videoId, id!!).collect {
+                    recentReactStatus -> _uiState.update { it.copy(reactStatus = recentReactStatus) }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            auth.currentUser?.uid.let { id ->
+                videoActionService.observeUserSavedVideo(videoId, id!!).collect {
+                    recentSaveStatus -> _uiState.update { it.copy(saveStatus = recentSaveStatus) }
+                }
+            }
+        }
+    }
+
+    fun toggleReaction(videoId: String) {
+        viewModelScope.launch {
+            auth.currentUser?.uid.let { videoActionService.toggleReaction(videoId, it!!) }
+        }
+    }
+
+    fun toggleSave(videoId: String) {
+        viewModelScope.launch {
+            auth.currentUser?.uid.let { videoActionService.toggleSave(videoId, it!!) }
         }
     }
 
@@ -40,15 +81,15 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
     }
 
     private fun loadVideo(videoUrl: String) {
-        _uiState.value = VideoDetailsIUState.Loading
+        _uiState.update { it.copy(playerState = VideoPlayerState.Loading) }
         viewModelScope.launch {
             try {
                 delay(1000L)
                 playVideo(videoUrl)
-                _uiState.value = VideoDetailsIUState.Success
+                _uiState.update { it.copy(playerState = VideoPlayerState.Success) }
 
             } catch (e: Exception) {
-                _uiState.value = VideoDetailsIUState.Error(e.message ?: "Unknown error")
+                _uiState.update { it.copy(playerState = VideoPlayerState.Error(e.message!!)) }
             }
         }
     }
@@ -75,11 +116,18 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
     }
 }
 
-sealed interface VideoDetailsIUState {
-    data object Default : VideoDetailsIUState
-    data object Loading: VideoDetailsIUState
-    data object Success: VideoDetailsIUState
-    data class Error(val message: String): VideoDetailsIUState
+data class VideoDetailUiState (
+    val playerState: VideoPlayerState = VideoPlayerState.Default,
+    val reactCount: Int = 0,
+    val reactStatus: Boolean = false,
+    val saveStatus: Boolean = false
+)
+
+sealed interface VideoPlayerState {
+    data object Default : VideoPlayerState
+    data object Loading: VideoPlayerState
+    data object Success: VideoPlayerState
+    data class Error(val message: String): VideoPlayerState
 }
 
 sealed class VideoDetailAction {
