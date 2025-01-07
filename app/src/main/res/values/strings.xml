@@ -26,4 +26,7 @@
     <string name="share">Share</string>
     <string name="view_details">View Details</string>
     <string name="book">Book</string>
+    <string name="reserve">Reserve</string>
+    <string name="choose_date_range">Pick Date</string>
+    <string name="select_room_amount">Room(s): </string>
 </resources>

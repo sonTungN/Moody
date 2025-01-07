@@ -1,8 +1,9 @@
 package vn.edu.rmit.ui.screen.user.booking
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,9 +15,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Chair
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.DoorFront
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePickerDialog
@@ -35,16 +40,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.rememberAsyncImagePainter
 import vn.edu.rmit.R
 import vn.edu.rmit.data.model.Property
-import vn.edu.rmit.data.model.type.PropertyType
 import vn.edu.rmit.ui.component.button.ActionButton
-import vn.edu.rmit.ui.component.video.VideoActionButtons
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -56,7 +62,9 @@ fun BookingDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     var selectedDateRange by remember { mutableStateOf<Pair<Long?, Long?>?> (null) }
-    var showModal by remember { mutableStateOf(false) }
+    var selectedRooms by remember { mutableStateOf(1) }
+    var showDateModal by remember { mutableStateOf(false) }
+    var showRoomModal by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -70,43 +78,76 @@ fun BookingDetailsScreen(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            IconButton(
+                onClick = onClose,
+                modifier = Modifier.align(Alignment.End)
             ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "Room Details",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Close")
-                }
+                Icon(Icons.Default.Close, contentDescription = "Close")
             }
+            Text(
+                text = "Room Details",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
 //            RoomDetails(property) {
 //
 //            }
 
-            if (selectedDateRange != null) {
+            val dateRangeText = if (selectedDateRange != null) {
                 val (startDate, endDate) = selectedDateRange!!
                 val formattedStartDate = startDate?.let {
-                    SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(it))
-                } ?: "No start date"
+                    SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date(it))
+                } ?: "Start"
                 val formattedEndDate = endDate?.let {
-                    SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(it))
-                } ?: "No end date"
+                    SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date(it))
+                } ?: "End"
+                "$formattedStartDate - $formattedEndDate"
             } else {
-                Text("No date selected")
+                stringResource(R.string.choose_date_range)
             }
 
-            DateRangePickerModal(
-                onDateRangeSelected = {
-                    selectedDateRange = it
-                    showModal = false
-                },
-                onDismiss = { showModal = false }
-            )
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ActionButton(
+                    onClick = { showDateModal = true },
+                    icon = Icons.Filled.CalendarToday,
+                    text = dateRangeText,
+                    contentDescription = "choose date range",
+                    modifier = Modifier
+                )
+                ActionButton(
+                    onClick = { showRoomModal = true },
+                    icon = Icons.Filled.Chair,
+                    text = stringResource(R.string.select_room_amount) + " " + selectedRooms.toString(),
+                    contentDescription = "select room amount",
+                    modifier = Modifier
+                )
+            }
+            if (showDateModal) {
+                DateRangePickerModal(
+                    onDateRangeSelected = {
+                        selectedDateRange = it
+                        showDateModal = false
+                    },
+                    onDismiss = { showDateModal = false }
+                )
+            }
+            if (showRoomModal) {
+                RoomPickerModal(
+                    initialRooms = selectedRooms,
+                    onDismiss = { showRoomModal = false },
+                    onConfirm = { rooms ->
+                        selectedRooms = rooms
+                        showRoomModal = false
+                    }
+                )
+            }
         }
     }
 }
@@ -183,6 +224,110 @@ fun DateRangePickerModal(
                 .padding(16.dp)
         )
     }
+}
+
+@Composable
+fun RoomPickerModal(
+    initialRooms: Int,
+    onDismiss: () -> Unit,
+    onConfirm: (Int) -> Unit
+) {
+    var rooms by remember { mutableStateOf(initialRooms) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Select Number of Rooms") },
+        text = {
+            RoomAmountPicker(
+                initValue = rooms,
+                onValueChange = { rooms = it }
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(rooms) }) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+fun RoomAmountPicker(
+    initValue: Int = 0,
+    minValue: Int = 0,
+    maxValue: Int = 10,
+    onValueChange: (Int) -> Unit
+) {
+    var value by remember { mutableStateOf(initValue) }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .height(48.dp)
+            .border(
+                width = 1.dp,
+                color = Color.LightGray,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(Color.White, RoundedCornerShape(8.dp)),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        IconButton(
+            onClick = {
+                if (value > minValue) {
+                    value--
+                    onValueChange(value)
+                }
+            },
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Remove,
+                contentDescription = "Decrease",
+                tint = Color.Blue
+            )
+        }
+
+        Text(
+            text = "$value",
+            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
+            color = Color.Black,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        IconButton(
+            onClick = {
+                if (value < maxValue) {
+                    value++
+                    onValueChange(value)
+                }
+            },
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Increase",
+                tint = Color.Blue
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun RoomPickerModalPreview() {
+    RoomPickerModal(
+        1,
+        onDismiss = {},
+        onConfirm = {},
+    )
 }
 
 @Preview(showBackground = true)
