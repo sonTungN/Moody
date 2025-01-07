@@ -51,6 +51,9 @@ import coil3.compose.rememberAsyncImagePainter
 import vn.edu.rmit.R
 import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.ui.component.button.ActionButton
+import vn.edu.rmit.ui.component.select.DateRangePickerModal
+import vn.edu.rmit.ui.component.select.RoomAmountPicker
+import vn.edu.rmit.ui.component.select.RoomPickerModal
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -176,147 +179,6 @@ fun RoomDetails(
             contentScale = ContentScale.Crop,
             modifier = Modifier.height(150.dp)
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun DateRangePickerModal(
-    onDateRangeSelected: (Pair<Long?, Long?>) -> Unit,
-    onDismiss: () -> Unit
-) {
-    val dateRangePickerState = rememberDateRangePickerState()
-
-    DatePickerDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onDateRangeSelected(
-                        Pair(
-                            dateRangePickerState.selectedStartDateMillis,
-                            dateRangePickerState.selectedEndDateMillis
-                        )
-                    )
-                    onDismiss()
-                }
-            ) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    ) {
-        DateRangePicker(
-            state = dateRangePickerState,
-            title = {
-                Text(
-                    text = "Select date range"
-                )
-            },
-            showModeToggle = false,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(500.dp)
-                .padding(16.dp)
-        )
-    }
-}
-
-@Composable
-fun RoomPickerModal(
-    initialRooms: Int,
-    onDismiss: () -> Unit,
-    onConfirm: (Int) -> Unit
-) {
-    var rooms by remember { mutableStateOf(initialRooms) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Select Number of Rooms") },
-        text = {
-            RoomAmountPicker(
-                initValue = rooms,
-                onValueChange = { rooms = it }
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = { onConfirm(rooms) }) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
-}
-
-@Composable
-fun RoomAmountPicker(
-    initValue: Int = 0,
-    minValue: Int = 0,
-    maxValue: Int = 10,
-    onValueChange: (Int) -> Unit
-) {
-    var value by remember { mutableStateOf(initValue) }
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .height(48.dp)
-            .border(
-                width = 1.dp,
-                color = Color.LightGray,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .background(Color.White, RoundedCornerShape(8.dp)),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(
-            onClick = {
-                if (value > minValue) {
-                    value--
-                    onValueChange(value)
-                }
-            },
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Remove,
-                contentDescription = "Decrease",
-                tint = Color.Blue
-            )
-        }
-
-        Text(
-            text = "$value",
-            style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
-            color = Color.Black,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        IconButton(
-            onClick = {
-                if (value < maxValue) {
-                    value++
-                    onValueChange(value)
-                }
-            },
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Increase",
-                tint = Color.Blue
-            )
-        }
     }
 }
 
