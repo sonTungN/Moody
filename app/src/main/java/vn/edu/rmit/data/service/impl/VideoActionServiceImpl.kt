@@ -2,6 +2,7 @@ package vn.edu.rmit.data.service.impl
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
@@ -17,6 +18,7 @@ class VideoActionServiceImpl @Inject constructor(
     val accountService: AccountService,
 ) : VideoActionService {
     private val videoReactionRef = db.reference.child("video_reaction")
+    private val activeListeners = mutableListOf<Pair<DatabaseReference, ValueEventListener>>()
 
     override fun observeVideoReactions(videoId: String): Flow<Int> = callbackFlow {
         val reactionRef = videoReactionRef.child(videoId).child("liked")
@@ -31,7 +33,11 @@ class VideoActionServiceImpl @Inject constructor(
             }
         }
         reactionRef.addValueEventListener(listener)
-        awaitClose { reactionRef.removeEventListener(listener) }
+//        trackListener(reactionRef, listener)
+        awaitClose {
+            reactionRef.removeEventListener(listener)
+//            activeListeners.removeAll { it.first == reactionRef && it.second == listener }
+        }
     }
 
     override fun observeUserReactedVideo(videoId: String, userId: String): Flow<Boolean> =
@@ -46,8 +52,13 @@ class VideoActionServiceImpl @Inject constructor(
                     close(databaseError.toException())
                 }
             }
+
             userReactionRef.addValueEventListener(listener)
-            awaitClose { userReactionRef.removeEventListener(listener) }
+//            trackListener(userReactionRef, listener)
+            awaitClose {
+                userReactionRef.removeEventListener(listener)
+//                activeListeners.removeAll { it.first == userReactionRef && it.second == listener }
+            }
         }
 
     override suspend fun toggleReaction(videoId: String, userId: String) {
@@ -72,8 +83,13 @@ class VideoActionServiceImpl @Inject constructor(
                     close(databaseError.toException())
                 }
             }
+
             userSaveRef.addValueEventListener(listener)
-            awaitClose { userSaveRef.removeEventListener(listener) }
+//            trackListener(userSaveRef, listener)
+            awaitClose {
+                userSaveRef.removeEventListener(listener)
+//                activeListeners.removeAll { it.first == userSaveRef && it.second == listener }
+            }
         }
 
     override suspend fun toggleSave(videoId: String, userId: String) {
@@ -85,4 +101,13 @@ class VideoActionServiceImpl @Inject constructor(
                 userSaveRef.setValue(true)
         }
     }
+
+//    private fun trackListener(ref: DatabaseReference, listener: ValueEventListener) {
+//        activeListeners.add(Pair(ref, listener))
+//    }
+//
+//    override fun cleanUpDtbListener() {
+//        activeListeners.forEach { (ref, listener) -> ref.removeEventListener(listener) }
+//        activeListeners.clear()
+//    }
 }

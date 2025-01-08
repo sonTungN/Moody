@@ -54,7 +54,7 @@ class PropertyServiceImpl @Inject constructor(
                 accountService.documentToProfile(it)
             }?.first() ?: Profile(),
             type = document.getDocumentReference("type")?.snapshots()?.map {
-                propertyTypeService.documentToLocationType(it)
+                propertyTypeService.documentToPropertyType(it)
             }?.first() ?: PropertyType(),
             name = document.getString("name") ?: "",
             address = document.getString("address") ?: "",

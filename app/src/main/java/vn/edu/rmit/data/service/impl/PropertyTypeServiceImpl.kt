@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PropertyTypeServiceImpl @Inject constructor(
     private val db: FirebaseFirestore
 ) : PropertyTypeService {
-    override fun documentToLocationType(document: DocumentSnapshot): PropertyType {
+    override fun documentToPropertyType(document: DocumentSnapshot): PropertyType {
         return PropertyType(
             id = document.id,
             name = document.getString("name") ?: "",
@@ -22,13 +22,13 @@ class PropertyTypeServiceImpl @Inject constructor(
 
     override fun getPropertyTypesFlow(): Flow<List<PropertyType>> {
         return db.collection("property_type").snapshots().map { snapshot ->
-            snapshot.documents.map { documentToLocationType(it) }
+            snapshot.documents.map { documentToPropertyType(it) }
         }
     }
 
     override suspend fun getPropertyTypes(): List<PropertyType> {
         return db.collection("property_type").get().await().documents.map {
-            documentToLocationType(it)
+            documentToPropertyType(it)
         }
     }
 }

@@ -16,7 +16,7 @@ import vn.edu.rmit.data.service.VideoService
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoPagerScreenViewModel @Inject constructor(
+class VideoPagerViewModel @Inject constructor(
     private val videoService: VideoService,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -38,6 +38,16 @@ class VideoPagerScreenViewModel @Inject constructor(
                 }
                 .collect { filteredVideos ->
                     _videos.value = filteredVideos
+                }
+        }
+    }
+
+    fun loadSavedVideo() {
+        viewModelScope.launch {
+            videoService
+                .getCurrentUserSavedVideos()
+                .collect{ savedVideos ->
+                    _videos.value = savedVideos
                 }
         }
     }

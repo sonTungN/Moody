@@ -3,7 +3,6 @@ package vn.edu.rmit
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,7 +14,7 @@ import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
-import vn.edu.rmit.ui.screen.user.reels.VideoPagerScreen
+import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 
 @Serializable
 object AuthenticationRoute
@@ -39,7 +38,7 @@ object HomeRoute
 object MoodFilterRoute
 
 @Serializable
-data class VideoPagerRoute (val selectedMoods: List<String>)
+data class SlideVideoPagerRoute (val selectedMoods: List<String>)
 
 @Composable
 fun MoodScapeRoutes(
@@ -115,19 +114,19 @@ fun MoodScapeRoutes(
                         navController.navigate(HomeRoute)
                     },
                     onSelected = { selectedMoodIds ->
-                        navController.navigate(VideoPagerRoute(selectedMoodIds))
+                        navController.navigate(SlideVideoPagerRoute(selectedMoodIds))
                     }
                 )
             }
 
-            composable<VideoPagerRoute> { backStackEntry ->
-                val route: VideoPagerRoute = backStackEntry.toRoute()
+            composable<SlideVideoPagerRoute> { backStackEntry ->
+                val route: SlideVideoPagerRoute = backStackEntry.toRoute()
                 Log.d("VideoPagerRoute", "selectedMoods: ${route.selectedMoods}")
-                VideoPagerScreen(
-                    selectedMoods = route.selectedMoods,
+                SlideVideoPagerScreen(
                     onHomeCtaClick = {
                         navController.navigate(HomeRoute)
-                    }
+                    },
+                    selectedMoods = route.selectedMoods
                 )
             }
 

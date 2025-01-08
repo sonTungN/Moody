@@ -26,7 +26,6 @@ import vn.edu.rmit.ui.component.video_player.VideoPlayer
 
 @Composable
 fun VideoDetailScreen(
-    onHomeCtaClick: () -> Unit,
     video: Video,
     videoViewModel: VideoDetailViewModel
 ) {
@@ -38,7 +37,6 @@ fun VideoDetailScreen(
     }
 
     VideoDetailScreenHandler(
-        onHomeCtaClick = onHomeCtaClick,
         video = video,
         uiState = uiState.playerState,
         player = videoViewModel.videoPlayer,
@@ -48,7 +46,6 @@ fun VideoDetailScreen(
 
 @Composable
 fun VideoDetailScreenHandler(
-    onHomeCtaClick: () -> Unit,
     video: Video,
     uiState: VideoPlayerState,
     player: Player,
@@ -72,7 +69,6 @@ fun VideoDetailScreenHandler(
         }
         is VideoPlayerState.Success -> {
             VideoDetail(
-                onHomeCtaClick = onHomeCtaClick,
                 video = video,
                 player = player,
                 handleAction = handleAction
@@ -85,7 +81,6 @@ fun VideoDetailScreenHandler(
 @OptIn(UnstableApi::class)
 @Composable
 fun VideoDetail(
-    onHomeCtaClick: () -> Unit,
     video: Video,
     player: Player,
     handleAction: (VideoDetailAction) -> Unit,
@@ -152,14 +147,6 @@ fun VideoDetail(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom, margin = 16.dp)
-            }.zIndex(1f)
-        )
-
-        HomeSmallCta(
-            onHomeCtaClick = onHomeCtaClick,
-            modifier = Modifier.constrainAs(homeCta) {
-                top.linkTo(parent.top, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
             }.zIndex(1f)
         )
     }
