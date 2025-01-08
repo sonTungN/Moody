@@ -11,6 +11,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.launch
 import vn.edu.rmit.ui.component.tab_index.TabContentView
+import vn.edu.rmit.ui.screen.user.reels.matched.VideoPagerScreen
+import vn.edu.rmit.ui.screen.user.reels.saved.SavedVideoPagerScreen
 
 @Composable
 fun SlideVideoPagerScreen(
@@ -68,7 +70,6 @@ fun SlideVideoPagerScreen(
                 end.linkTo(parent.end)
                 width = Dimension.fillToConstraints
             },
-            
         )
     }
 }

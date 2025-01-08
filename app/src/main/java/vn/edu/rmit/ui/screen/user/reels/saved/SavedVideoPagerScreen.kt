@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.user.reels
+package vn.edu.rmit.ui.screen.user.reels.saved
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,18 +13,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.ui.component.video.VideoDetailScreen
 
 @Composable
-fun VideoPagerScreen(
+fun SavedVideoPagerScreen(
     onHomeCtaClick: () -> Unit,
     onBookingClick: (id: String) -> Unit,
     onDetailClick: (id: String) -> Unit,
-    viewModel: VideoPagerViewModel = hiltViewModel(),
-    selectedMoods: List<String>
+    viewModel: SavedVideoPagerViewModel = hiltViewModel(),
 ) {
     val videos by viewModel.videos.collectAsState()
     val pagerState = rememberPagerState(pageCount = { videos.size })
 
-    LaunchedEffect(selectedMoods) {
-        viewModel.loadVideosForMoods(selectedMoods)
+    LaunchedEffect("saved_video") {
+        viewModel.loadSavedVideo()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -35,8 +34,8 @@ fun VideoPagerScreen(
             val video = videos[page]
             VideoDetailScreen(
                 video = video,
+                onDetailClick = onDetailClick,
                 onBookingClick = onBookingClick,
-                onDetailClick = onDetailClick
             )
         }
     }

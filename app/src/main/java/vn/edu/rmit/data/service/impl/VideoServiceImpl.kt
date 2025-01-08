@@ -81,7 +81,6 @@ class VideoServiceImpl @Inject constructor(
                 return@addSnapshotListener
             }
 
-            // Launch a coroutine to handle suspend function
             launch {
                 snapshot?.documents?.forEach { doc ->
                     allVideos[doc.id] = documentToVideo(doc)
