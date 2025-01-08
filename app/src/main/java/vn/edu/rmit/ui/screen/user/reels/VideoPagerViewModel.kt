@@ -52,14 +52,6 @@ class VideoPagerViewModel @Inject constructor(
         }
     }
 
-    fun getVideoPlayer(): ExoPlayer {
-        return ExoPlayer.Builder(context).build().apply {
-            repeatMode = Player.REPEAT_MODE_ONE
-            playWhenReady = true
-            volume = 1f
-        }
-    }
-
     override fun onCleared() {
         super.onCleared()
         exoPlayerCache.values.forEach { it.release() }

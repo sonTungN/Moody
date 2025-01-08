@@ -78,7 +78,6 @@ fun VideoDetailScreenHandler(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 fun VideoDetail(
     video: Video,

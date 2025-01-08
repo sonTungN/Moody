@@ -34,6 +34,7 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
             repeatMode = REPEAT_MODE_ONE
             playWhenReady = true
             videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+            volume = 1f
         }
     }
 
@@ -102,7 +103,6 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
         }
     }
 
-    @OptIn(UnstableApi::class)
     private fun playVideo(videoUrl: String) {
         val mediaItem = MediaItem.fromUri(videoUrl)
         videoPlayer.setMediaItem(mediaItem)
