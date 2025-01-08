@@ -15,6 +15,8 @@ import vn.edu.rmit.ui.component.tab_index.TabContentView
 @Composable
 fun SlideVideoPagerScreen(
     onHomeCtaClick: () -> Unit,
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
     selectedMoods: List<String>
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -44,9 +46,13 @@ fun SlideVideoPagerScreen(
             })
         { pageIndex ->
             when (pageIndex) {
-                0 -> SavedVideoPagerScreen(onHomeCtaClick = onHomeCtaClick)
+                0 -> SavedVideoPagerScreen(onHomeCtaClick = onHomeCtaClick,
+                    onBookingClick = onBookingClick,
+                    onDetailClick = onDetailClick)
                 1 -> VideoPagerScreen(
                     onHomeCtaClick = onHomeCtaClick,
+                    onBookingClick = onBookingClick,
+                    onDetailClick = onDetailClick,
                     selectedMoods = selectedMoods
                 )
             }

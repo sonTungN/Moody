@@ -27,7 +27,9 @@ import vn.edu.rmit.ui.component.video_player.VideoPlayer
 @Composable
 fun VideoDetailScreen(
     video: Video,
-    videoViewModel: VideoDetailViewModel
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
+    videoViewModel: VideoDetailViewModel = hiltViewModel()
 ) {
     val uiState by videoViewModel.uiState.collectAsState()
 
@@ -40,6 +42,8 @@ fun VideoDetailScreen(
         video = video,
         uiState = uiState.playerState,
         player = videoViewModel.videoPlayer,
+        onBookingClick = onBookingClick,
+        onDetailClick = onDetailClick,
         handleAction = { action -> videoViewModel.handleAction(action = action) }
     )
 }
@@ -49,6 +53,8 @@ fun VideoDetailScreenHandler(
     video: Video,
     uiState: VideoPlayerState,
     player: Player,
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
     handleAction: (VideoDetailAction) -> Unit
 ) {
     DisposableEffect(Unit) {
@@ -71,6 +77,8 @@ fun VideoDetailScreenHandler(
             VideoDetail(
                 video = video,
                 player = player,
+                onBookingClick = onBookingClick,
+                onDetailClick = onDetailClick,
                 handleAction = handleAction
             )
         }
@@ -82,6 +90,8 @@ fun VideoDetailScreenHandler(
 fun VideoDetail(
     video: Video,
     player: Player,
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
     handleAction: (VideoDetailAction) -> Unit,
     videoViewModel: VideoDetailViewModel = hiltViewModel()
 ) {
@@ -140,8 +150,8 @@ fun VideoDetail(
         )
 
         VideoActionButtons(
-            onBookClick = {},
-            onViewDetailClick = {},
+            onBookClick = {onBookingClick(video.propertyId)},
+            onViewDetailClick = { onDetailClick(video.propertyId) },
             modifier = Modifier.constrainAs(videoActionBtn) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
@@ -149,5 +159,4 @@ fun VideoDetail(
             }.zIndex(1f)
         )
     }
-
 }

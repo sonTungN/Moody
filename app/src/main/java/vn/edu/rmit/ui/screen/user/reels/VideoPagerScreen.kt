@@ -15,6 +15,8 @@ import vn.edu.rmit.ui.component.video.VideoDetailScreen
 @Composable
 fun VideoPagerScreen(
     onHomeCtaClick: () -> Unit,
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
     viewModel: VideoPagerViewModel = hiltViewModel(),
     selectedMoods: List<String>
 ) {
@@ -33,7 +35,8 @@ fun VideoPagerScreen(
             val video = videos[page]
             VideoDetailScreen(
                 video = video,
-                videoViewModel = hiltViewModel()
+                onBookingClick = onBookingClick,
+                onDetailClick = onDetailClick
             )
         }
     }
