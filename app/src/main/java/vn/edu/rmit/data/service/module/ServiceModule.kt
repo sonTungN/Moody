@@ -9,12 +9,14 @@ import vn.edu.rmit.data.service.MoodService
 import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.PropertyTypeService
 import vn.edu.rmit.data.service.RoleService
+import vn.edu.rmit.data.service.VideoActionService
 import vn.edu.rmit.data.service.VideoService
 import vn.edu.rmit.data.service.impl.AccountServiceImpl
 import vn.edu.rmit.data.service.impl.MoodServiceImpl
 import vn.edu.rmit.data.service.impl.PropertyServiceImpl
 import vn.edu.rmit.data.service.impl.PropertyTypeServiceImpl
 import vn.edu.rmit.data.service.impl.RoleServiceImpl
+import vn.edu.rmit.data.service.impl.VideoActionServiceImpl
 import vn.edu.rmit.data.service.impl.VideoServiceImpl
 
 @Module
@@ -37,4 +39,7 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun provideVideoService(impl: VideoServiceImpl): VideoService
+
+    @Binds
+    abstract fun provideVideoActionService(impl: VideoActionServiceImpl): VideoActionService
 }

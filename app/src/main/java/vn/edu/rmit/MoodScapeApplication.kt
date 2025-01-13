@@ -24,12 +24,6 @@ fun MoodScapeApplication(
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route
 
-    // Add this debug log
-    Log.d("Navigation", "Current screen route: $currentScreen")
-    Log.d("Navigation", "VideoPager qualified: ${VideoPagerRoute::class.qualifiedName}")
-    Log.d("Navigation", "VideoPager simple: ${VideoPagerRoute::class.simpleName}")
-    Log.d("Navigation", "Like to booking: ${InteractionRoute::class.simpleName}")
-
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel.currentUser) {
@@ -38,7 +32,7 @@ fun MoodScapeApplication(
 
     val isVisibleBar = !(
             currentScreen?.startsWith(MoodFilterRoute::class.qualifiedName ?: "") == true ||
-            currentScreen?.startsWith(VideoPagerRoute::class.qualifiedName ?: "") == true
+            currentScreen?.startsWith(SlideVideoPagerRoute::class.qualifiedName ?: "") == true
     )
 
     Scaffold(modifier = Modifier.fillMaxSize(),

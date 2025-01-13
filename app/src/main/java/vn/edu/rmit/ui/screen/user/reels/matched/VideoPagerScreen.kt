@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.user.reels
+package vn.edu.rmit.ui.screen.user.reels.matched
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +11,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.ui.component.video.VideoDetailScreen
+import vn.edu.rmit.ui.screen.user.reels.matched.VideoPagerViewModel
 
 @Composable
 fun VideoPagerScreen(
     onHomeCtaClick: () -> Unit,
-    viewModel: VideoPagerScreenViewModel = hiltViewModel(),
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
+    viewModel: VideoPagerViewModel = hiltViewModel(),
     selectedMoods: List<String>
 ) {
     val videos by viewModel.videos.collectAsState()
@@ -32,9 +35,9 @@ fun VideoPagerScreen(
         ) { page ->
             val video = videos[page]
             VideoDetailScreen(
-                onHomeCtaClick = onHomeCtaClick,
                 video = video,
-                videoViewModel = hiltViewModel()
+                onBookingClick = onBookingClick,
+                onDetailClick = onDetailClick
             )
         }
     }

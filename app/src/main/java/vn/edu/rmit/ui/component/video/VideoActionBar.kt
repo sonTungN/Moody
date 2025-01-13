@@ -35,6 +35,8 @@ import vn.edu.rmit.R
 @Composable
 fun VideoActionBar(
     likes: Int,
+    isLiked: Boolean,
+    isSaved: Boolean,
     comments: Int,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
@@ -44,22 +46,21 @@ fun VideoActionBar(
     Column(
         modifier = modifier.wrapContentWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         IconButton(
-            modifier = Modifier.size(60.dp),
+            modifier = Modifier.size(70.dp),
             onClick = onLikeClick
         ) {
-            var isFavorite by remember { mutableStateOf(false) }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 IconToggleButton(
                     modifier = Modifier.size(40.dp),
-                    checked = isFavorite,
-                    onCheckedChange = { isFavorite = !isFavorite }
+                    checked = isLiked,
+                    onCheckedChange = { onLikeClick() }
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
-                        imageVector = if (isFavorite) Icons.Filled.Favorite
+                        imageVector = if (isLiked) Icons.Filled.Favorite
                                         else Icons.Default.FavoriteBorder,
                         contentDescription = "favorite",
                         tint = Color(0xffE91E63),
@@ -72,46 +73,47 @@ fun VideoActionBar(
             }
         }
 
-//        IconButton(
-//            modifier = Modifier.size(60.dp),
-//            onClick = onCommentClick
-//        ) {
-//            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                Icon(
-//                    Icons.Filled.ChatBubble,
-//                    "comments",
-//                    modifier = Modifier.size(35.dp),
-//                    tint = Color.Whites
-//                )
-//                Text(
-//                    modifier = Modifier.padding(top = 4.dp),
-//                    text = comments.toString(),
-//                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
-//                )
-//            }
-//        }
-
+        /*
         IconButton(
             modifier = Modifier.size(60.dp),
+            onClick = onCommentClick
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Icon(
+                    Icons.Filled.ChatBubble,
+                    "comments",
+                    modifier = Modifier.size(35.dp),
+                    tint = Color.White
+                )
+                Text(
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = comments.toString(),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
+                )
+            }
+        }
+         */
+
+        IconButton(
+            modifier = Modifier.size(70.dp),
             onClick = onSaveClick
         ) {
-            var isSaved by remember { mutableStateOf(false) }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 IconToggleButton(
                     modifier = Modifier.size(40.dp),
                     checked = isSaved,
-                    onCheckedChange = { isSaved = !isSaved }
+                    onCheckedChange = { onSaveClick() }
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = if (isSaved) Icons.Filled.Bookmark
-                        else Icons.Default.BookmarkBorder,
-                        contentDescription = "favorite",
+                            else Icons.Default.BookmarkBorder,
+                        contentDescription = "save",
                         tint = Color(0xfffbc826),
                     )
                 }
                 Text(
-                    text = stringResource(R.string.save),
+                    text = if (isSaved) stringResource(R.string.saved) else stringResource(R.string.save),
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
                 )
             }
@@ -124,6 +126,8 @@ fun VideoActionBar(
 fun VideoActionBarPreview() {
     VideoActionBar(
         likes = 100,
+        isLiked = false,
+        isSaved = false,
         comments = 50,
         onLikeClick = {},
         onCommentClick = { TODO() },

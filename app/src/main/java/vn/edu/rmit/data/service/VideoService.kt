@@ -9,4 +9,5 @@ interface VideoService {
     suspend fun getVideoById(id: String): Video
     fun getVideoByPropertyId(propertyId: String): Flow<List<Video>>
     fun getVideos(): Flow<List<Video>>
+    fun getCurrentUserSavedVideos(): Flow<List<Video>>
 }

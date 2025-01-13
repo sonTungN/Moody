@@ -2,6 +2,7 @@ package vn.edu.rmit.data.service.impl
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.snapshots
@@ -10,15 +11,19 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import vn.edu.rmit.data.model.Profile
+import vn.edu.rmit.data.model.Video
 import vn.edu.rmit.data.model.type.Role
 import vn.edu.rmit.data.service.AccountService
+import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.RoleService
+import vn.edu.rmit.data.service.VideoActionService
+import vn.edu.rmit.data.service.VideoService
 import javax.inject.Inject
 
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore,
-    private val roleService: RoleService
+    private val roleService: RoleService,
 ) : AccountService {
     private val profileRef = db.collection("profiles")
 
@@ -31,9 +36,13 @@ class AccountServiceImpl @Inject constructor(
         get() = auth.currentUser !== null
 
     override suspend fun documentToProfile(document: DocumentSnapshot): Profile {
+
         return Profile(
             id = document.id,
             fullName = document.getString("name") ?: "",
+            email = document.getString("email") ?: "",
+            phoneNumber = document.getString("phoneNumber") ?: "",
+            profileUrl = document.getString("profileUrl") ?: "",
             role = document
                 .getDocumentReference("role")
                 ?.snapshots()

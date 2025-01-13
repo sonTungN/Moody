@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,38 +19,42 @@ import androidx.media3.common.Player
 import dagger.hilt.android.UnstableApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.data.model.Video
 import vn.edu.rmit.ui.component.button.HomeSmallCta
 import vn.edu.rmit.ui.component.video_player.VideoPlayer
 
 @Composable
 fun VideoDetailScreen(
-    onHomeCtaClick: () -> Unit,
     video: Video,
-    videoViewModel: VideoDetailViewModel
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
+    videoViewModel: VideoDetailViewModel = hiltViewModel()
 ) {
     val uiState by videoViewModel.uiState.collectAsState()
 
-    if (uiState == VideoDetailsIUState.Default) {
+    if (uiState.playerState == VideoPlayerState.Default) {
         Log.d("VideoURL", video.url)
         videoViewModel.handleAction(VideoDetailAction.LoadData(video.url))
     }
 
     VideoDetailScreenHandler(
-        onHomeCtaClick = onHomeCtaClick,
         video = video,
-        uiState = uiState,
+        uiState = uiState.playerState,
         player = videoViewModel.videoPlayer,
+        onBookingClick = onBookingClick,
+        onDetailClick = onDetailClick,
         handleAction = { action -> videoViewModel.handleAction(action = action) }
     )
 }
 
 @Composable
 fun VideoDetailScreenHandler(
-    onHomeCtaClick: () -> Unit,
     video: Video,
-    uiState: VideoDetailsIUState,
+    uiState: VideoPlayerState,
     player: Player,
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
     handleAction: (VideoDetailAction) -> Unit
 ) {
     DisposableEffect(Unit) {
@@ -60,7 +65,7 @@ fun VideoDetailScreenHandler(
     }
 
     when (uiState) {
-        is VideoDetailsIUState.Loading -> {
+        is VideoPlayerState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -68,11 +73,12 @@ fun VideoDetailScreenHandler(
                 Text(text = "Video Loading...")
             }
         }
-        is VideoDetailsIUState.Success -> {
+        is VideoPlayerState.Success -> {
             VideoDetail(
-                onHomeCtaClick = onHomeCtaClick,
                 video = video,
                 player = player,
+                onBookingClick = onBookingClick,
+                onDetailClick = onDetailClick,
                 handleAction = handleAction
             )
         }
@@ -80,14 +86,21 @@ fun VideoDetailScreenHandler(
     }
 }
 
-@OptIn(UnstableApi::class)
 @Composable
 fun VideoDetail(
-    onHomeCtaClick: () -> Unit,
     video: Video,
     player: Player,
-    handleAction: (VideoDetailAction) -> Unit
+    onBookingClick: (id: String) -> Unit,
+    onDetailClick: (id: String) -> Unit,
+    handleAction: (VideoDetailAction) -> Unit,
+    videoViewModel: VideoDetailViewModel = hiltViewModel()
 ) {
+    val uiState by videoViewModel.uiState.collectAsState()
+
+    LaunchedEffect(video.id) {
+        videoViewModel.observeVideoDetailActionStatus(video.id)
+    }
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -110,14 +123,16 @@ fun VideoDetail(
         )
 
         VideoActionBar(
-            likes = 0,
+            likes = uiState.reactCount,
+            isLiked = uiState.reactStatus,
+            isSaved = uiState.saveStatus,
             comments = 0,
-            onLikeClick = { },
+            onLikeClick = { videoViewModel.toggleReaction(videoId = video.id) },
             onCommentClick = { },
-            onSaveClick = {},
+            onSaveClick = { videoViewModel.toggleSave(videoId = video.id) },
             modifier = Modifier.constrainAs(sideBar) {
                 end.linkTo(parent.end, margin = 8.dp)
-                bottom.linkTo(videoActionBtn.top, margin = 16.dp)
+                bottom.linkTo(videoActionBtn.top, margin = 8.dp)
             }.zIndex(1f)
         )
 
@@ -135,22 +150,13 @@ fun VideoDetail(
         )
 
         VideoActionButtons(
-            onBookClick = {},
-            onViewDetailClick = {},
+            onBookClick = {onBookingClick(video.propertyId)},
+            onViewDetailClick = { onDetailClick(video.propertyId) },
             modifier = Modifier.constrainAs(videoActionBtn) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 bottom.linkTo(parent.bottom, margin = 16.dp)
             }.zIndex(1f)
         )
-
-        HomeSmallCta(
-            onHomeCtaClick = onHomeCtaClick,
-            modifier = Modifier.constrainAs(homeCta) {
-                top.linkTo(parent.top, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
-            }.zIndex(1f)
-        )
     }
-
 }

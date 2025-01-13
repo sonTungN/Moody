@@ -16,7 +16,8 @@ import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
-import vn.edu.rmit.ui.screen.user.reels.VideoPagerScreen
+import vn.edu.rmit.ui.screen.user.property.PropertyScreen
+import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 
 @Serializable
 object AuthenticationRoute
@@ -40,13 +41,10 @@ object HomeRoute
 object MoodFilterRoute
 
 @Serializable
-data class VideoPagerRoute (val selectedMoods: List<String>)
+data class SlideVideoPagerRoute (val selectedMoods: List<String>)
 
 @Serializable
-data class InteractionRoute (val selectedVideo: String)
-
-@Serializable
-data class BookingRoute (val selectedVideo: String)
+data class PropertyRoute(val id: String)
 
 @Composable
 fun MoodScapeRoutes(
@@ -122,33 +120,21 @@ fun MoodScapeRoutes(
                         navController.navigate(HomeRoute)
                     },
                     onSelected = { selectedMoodIds ->
-                        navController.navigate(VideoPagerRoute(selectedMoodIds))
+                        navController.navigate(SlideVideoPagerRoute(selectedMoodIds))
                     }
                 )
             }
 
-            composable<VideoPagerRoute> { backStackEntry ->
-                val route: VideoPagerRoute = backStackEntry.toRoute()
+            composable<SlideVideoPagerRoute> { backStackEntry ->
+                val route: SlideVideoPagerRoute = backStackEntry.toRoute()
                 Log.d("VideoPagerRoute", "selectedMoods: ${route.selectedMoods}")
-                VideoPagerScreen(
-                    selectedMoods = route.selectedMoods,
+                SlideVideoPagerScreen(
                     onHomeCtaClick = {
                         navController.navigate(HomeRoute)
-                    }
-                )
-            }
-
-            composable<InteractionRoute> { backStackEntry ->
-                val route: InteractionRoute = backStackEntry.toRoute()
-                Log.d("InteractionRoute", "selectedVid: ${route.selectedVideo}")
-                VideoActionBar(
-                    likes = 0,
-                    comments = 0,
-                    onLikeClick = {
-                        navController.navigate(BookingRoute)
                     },
-                    onCommentClick = {},
-                    onSaveClick = {}
+                    onDetailClick = { navController.navigate(PropertyRoute(it)) },
+                    onBookingClick = {},
+                    selectedMoods = route.selectedMoods
                 )
             }
 
@@ -166,8 +152,10 @@ fun MoodScapeRoutes(
                     })
             }
 
-            composable<BookingRoute> {
-//                BookingScreen()
+            composable<PropertyRoute> { backStackEntry ->
+                val route: PropertyRoute = backStackEntry.toRoute()
+
+                PropertyScreen(route.id)
             }
         }
 

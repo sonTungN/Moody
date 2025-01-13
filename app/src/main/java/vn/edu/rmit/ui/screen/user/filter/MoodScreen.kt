@@ -108,7 +108,7 @@ fun MoodScreen(
         ) {
             if (selectedEmotions.isNotEmpty()) {
                 Text(
-                    text = "Selected: ${selectedEmotions.size} moods",
+                    text = if (selectedEmotions.size > 1) "Selected: ${selectedEmotions.size} moods" else "Selected: 1 mood",
                     fontSize = 20.sp,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
