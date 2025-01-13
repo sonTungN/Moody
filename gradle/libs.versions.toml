@@ -26,6 +26,7 @@ places = "4.1.0"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 uiTextGoogleFonts = "1.7.6"
+composeMaterialCore = "1.4.0"
 
 [libraries]
 android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "androidMapsUtils" }
@@ -65,6 +66,7 @@ material3 = { module = "androidx.compose.material3:material3", version.ref = "ma
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+androidx-compose-material-core = { group = "androidx.wear.compose", name = "compose-material-core", version.ref = "composeMaterialCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

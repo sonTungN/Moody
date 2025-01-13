@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +18,8 @@ import androidx.compose.material.icons.filled.Chair
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,10 +43,12 @@ import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.component.button.ActionButton
 import vn.edu.rmit.ui.component.select.DateRangePickerModal
 import vn.edu.rmit.ui.component.select.RoomPickerModal
+import vn.edu.rmit.ui.component.select.getFormattedDate
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingScreen(
     id: String,
@@ -80,11 +85,9 @@ fun BookingScreen(
             val dateRangeText = if (selectedDateRange != null) {
                 val (startDate, endDate) = selectedDateRange!!
                 val formattedStartDate = startDate?.let {
-                    SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date(it))
-                } ?: "Start"
+                    getFormattedDate(it)                } ?: "Start"
                 val formattedEndDate = endDate?.let {
-                    SimpleDateFormat("MMM dd", Locale.getDefault()).format(Date(it))
-                } ?: "End"
+                    getFormattedDate(it)                } ?: "End"
                 "$formattedStartDate - $formattedEndDate"
             } else {
                 stringResource(R.string.choose_date_range)
@@ -111,11 +114,12 @@ fun BookingScreen(
                     contentDescription = "select room amount",
                     modifier = Modifier
                 )
-                Button(
-                    onClick = { viewModel.reserveProperty(uiState.property.id) }
-                ) {
-                    Text(stringResource(R.string.reserve))
-                }
+            }
+            Button(
+                onClick = { viewModel.reserveProperty(uiState.property.id) },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text(stringResource(R.string.reserve))
             }
             if (showDateModal) {
                 DateRangePickerModal(
@@ -123,6 +127,7 @@ fun BookingScreen(
                         selectedDateRange = it
                         showDateModal = false
                     },
+//                    dateFormatter = DatePickerDefaults.dateFormatter("yy MM dd"),
                     onDismiss = { showDateModal = false }
                 )
             }
@@ -168,8 +173,6 @@ fun RoomDetails(
                 modifier = Modifier.height(150.dp)
             )
         }
-
-
     }
 }
 
