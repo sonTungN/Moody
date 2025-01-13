@@ -9,7 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import vn.edu.rmit.ui.component.video.VideoActionBar
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
@@ -45,6 +44,9 @@ data class SlideVideoPagerRoute (val selectedMoods: List<String>)
 
 @Serializable
 data class PropertyRoute(val id: String)
+
+@Serializable
+data class BookingRoute(val id:String)
 
 @Composable
 fun MoodScapeRoutes(
@@ -133,7 +135,7 @@ fun MoodScapeRoutes(
                         navController.navigate(HomeRoute)
                     },
                     onDetailClick = { navController.navigate(PropertyRoute(it)) },
-                    onBookingClick = {},
+                    onBookingClick = { navController.navigate(BookingRoute(it)) },
                     selectedMoods = route.selectedMoods
                 )
             }
@@ -156,6 +158,13 @@ fun MoodScapeRoutes(
                 val route: PropertyRoute = backStackEntry.toRoute()
 
                 PropertyScreen(route.id)
+            }
+
+            composable<BookingRoute> {backStackEntry ->
+                val route: BookingRoute = backStackEntry.toRoute()
+
+                BookingScreen(route.id)
+
             }
         }
 
