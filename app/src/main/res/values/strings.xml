@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MoodScape</string>
+    <string name="email">Email</string>
+
+    <string name="login_description">Discover suitable place for yourself!</string>
+
+    <string name="password">Password</string>
+    <string name="password_hide">Hide password\n</string>
+    <string name="password_show">Show password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="register_description">Find the ideal place to relax!</string>
+    <string name="name">Name</string>
+    <string name="role">Role</string>
+    <string name="logout">Logout</string>
+    <string name="statistic">Statistic</string>
+    <string name="mood_form_description">How are you feeling?</string>
+    <string name="notifications">Notifications</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="booking">Booking</string>
+    <string name="save">Save</string>
+    <string name="settings">Setting</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="email_already_exists">Email already exists</string>
+    <string name="share">Share</string>
+    <string name="view_details">View Details</string>
+    <string name="book">Book</string>
+    <string name="saved">Saved</string>
+</resources>

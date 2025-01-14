@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78053230203",
+    "project_id": "shortvideo-3333b",
+    "storage_bucket": "shortvideo-3333b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78053230203:android:a09e4cddafb7516f5d84de",
+        "android_client_info": {
+          "package_name": "vn.edu.rmit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwclm4_TOOUD8xkhxsBM5WfFee5yQ4xPE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
