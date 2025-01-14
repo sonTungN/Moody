@@ -96,7 +96,7 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     // Realtime Database
-    implementation("com.google.firebase:firebase-database")
+    implementation(libs.firebase.database)
 
     // Media3 ExoPLayer
     implementation(libs.androidx.media3.exoplayer)
