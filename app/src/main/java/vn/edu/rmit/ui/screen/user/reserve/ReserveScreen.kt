@@ -1,2 +1,37 @@
 package vn.edu.rmit.ui.screen.user.reserve
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import vn.edu.rmit.ui.component.property.RoomDetails
+import vn.edu.rmit.data.model.Property
+
+@Composable
+fun ReserveScreen(
+//    id: String,
+    viewModel: ReserveScreenViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    val properties = uiState.properties.map { property ->
+        Property(
+            id = property.id,
+            name = property.name,
+            image = property.image,
+            address = property.address
+        )
+    }
+
+    LazyColumn(modifier = modifier.padding(8.dp)) {
+        items(properties) { property ->
+            RoomDetails(property)
+        }
+    }
+}

@@ -17,6 +17,7 @@ import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
+import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 
 @Serializable
 object AuthenticationRoute
@@ -40,13 +41,17 @@ object HomeRoute
 object MoodFilterRoute
 
 @Serializable
+object ReservationRoute
+
+@Serializable
 data class SlideVideoPagerRoute (val selectedMoods: List<String>)
 
 @Serializable
 data class PropertyRoute(val id: String)
 
 @Serializable
-data class BookingRoute(val id:String)
+data class BookingRoute(val id: String)
+
 
 @Composable
 fun MoodScapeRoutes(
@@ -143,7 +148,7 @@ fun MoodScapeRoutes(
 
             composable<HomeRoute> {
                 HomeScreen(
-                    onScheduleClick = {},
+                    onReservationClick = {},
                     onDonationClick = { id -> },
                     onLogout = {
                         navController.navigate(AuthenticationRoute) {
@@ -153,6 +158,10 @@ fun MoodScapeRoutes(
                         }
                         onLogoutSuccess()
                     })
+            }
+
+            composable<ReservationRoute> {
+                ReserveScreen()
             }
 
             composable<PropertyRoute> { backStackEntry ->
@@ -165,7 +174,6 @@ fun MoodScapeRoutes(
                 val route: BookingRoute = backStackEntry.toRoute()
 
                 BookingScreen(route.id)
-
             }
         }
 

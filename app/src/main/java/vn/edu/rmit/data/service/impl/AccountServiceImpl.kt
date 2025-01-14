@@ -18,7 +18,7 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore,
-    private val roleService: RoleService
+    private val roleService: RoleService,
 ) : AccountService {
     private val profileRef = db.collection("profiles")
 

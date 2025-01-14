@@ -1,9 +1,9 @@
 package vn.edu.rmit.ui.screen.user
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddLocationAlt
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Hotel
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import vn.edu.rmit.HomeRoute
 import vn.edu.rmit.R
+import vn.edu.rmit.ReservationRoute
 
 @Composable
 fun UserBottomNavigation(
@@ -55,13 +56,13 @@ fun UserBottomNavigation(
         NavigationBarItem(
             icon = {
                 Icon(
-                    Icons.Filled.AddLocationAlt,
-                    contentDescription = stringResource(R.string.booking)
+                    Icons.Filled.Hotel,
+                    contentDescription = stringResource(R.string.reserved)
                 )
             },
-            label = { Text(stringResource(R.string.booking)) },
-            selected = false,
-            onClick = {}
+            label = { Text(stringResource(R.string.reserved)) },
+            selected = currentScreen == ReservationRoute::class.qualifiedName,
+            onClick = { navigate(ReservationRoute) }
         )
 
         NavigationBarItem(
