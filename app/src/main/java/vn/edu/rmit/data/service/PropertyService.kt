@@ -7,5 +7,6 @@ import vn.edu.rmit.data.model.Property
 interface PropertyService {
     suspend fun documentToProperty(document: DocumentSnapshot): Property
     suspend fun getProperty(id: String): Property
+    suspend fun updateProperty(property: Property)
     fun getProperties(): Flow<List<Property>>
 }

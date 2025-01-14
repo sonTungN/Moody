@@ -21,4 +21,5 @@ interface AccountService {
     suspend fun createProfile(id: String, profile: Profile): String
 
     suspend fun getProfileCount(): Long
+    suspend fun updateProfile(profile: Profile)
 }
