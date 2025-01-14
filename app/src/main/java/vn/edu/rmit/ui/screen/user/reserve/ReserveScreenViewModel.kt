@@ -49,8 +49,8 @@ class ReserveScreenViewModel @Inject constructor(
             val profile = accountService.getProfile()
             profile?.let { userProfile ->
                 val properties = propertyService.getProperties().first()
-                val userProperties = properties.filter { property ->
-                    property.travelers.any { traveler -> traveler.id == userProfile.id }
+                val userProperties = userProfile.booking.mapNotNull { bookingId ->
+                    properties.find { property -> property.id == bookingId }
                 }
                 _uiState.update { state ->
                     state.copy(properties = userProperties)

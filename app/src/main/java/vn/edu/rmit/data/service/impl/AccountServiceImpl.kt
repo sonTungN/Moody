@@ -44,6 +44,8 @@ class AccountServiceImpl @Inject constructor(
                 ?.map {
                     roleService.documentToRole(it)
                 }?.first() ?: Role(),
+            booking = document.get("booking") as? List<String> ?: emptyList(),
+            savedProperties = document.get("savedProperties") as? List<String> ?: emptyList()
         )
     }
 

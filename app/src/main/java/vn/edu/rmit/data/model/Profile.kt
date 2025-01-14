@@ -12,4 +12,5 @@ data class Profile(
     val role: Role = Role(),
 
     val booking: List<String> = emptyList(),
+    val savedProperties: List<String> = emptyList(),
 )
