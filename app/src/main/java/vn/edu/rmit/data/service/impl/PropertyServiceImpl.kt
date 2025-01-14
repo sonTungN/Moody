@@ -100,4 +100,22 @@ class PropertyServiceImpl @Inject constructor(
             snapshot.documents.map { documentToProperty(it) }
         }
     }
+
+    override suspend fun updateProperty(property: Property) {
+        db.collection("properties").document(property.id).set(
+            hashMapOf(
+                "name" to property.name,
+                "address" to property.address,
+                "geoPoint" to property.geoPoint?.let {
+                    mapOf("latitude" to it.latitude, "longitude" to it.longitude)
+                },
+                "image" to property.image,
+                "videos" to property.videos.map { video -> db.collection("videos").document(video.id) },
+                "mood_tags" to property.moodTags.map { mood -> db.collection("moods").document(mood.id) },
+                "opening_hours" to property.openingHours.toString(),
+                "closing_hours" to property.closingHours.toString(),
+                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) } // Save as DocumentReferences
+            )
+        ).await()
+    }
 }
