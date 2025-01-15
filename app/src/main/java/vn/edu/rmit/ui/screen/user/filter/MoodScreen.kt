@@ -126,7 +126,7 @@ fun MoodScreen(
                 )
             ) {
                 Text(
-                    text = "Continue",
+                    text = stringResource(R.string._continue),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -136,13 +136,15 @@ fun MoodScreen(
 
             Button(
                 onClick = onSkip,
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Black
                 )
             ) {
                 Text(
-                    text = "Skip",
+                    text = stringResource(R.string.skip),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold
                 )

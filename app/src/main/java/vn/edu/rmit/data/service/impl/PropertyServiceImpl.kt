@@ -114,7 +114,8 @@ class PropertyServiceImpl @Inject constructor(
                 "mood_tags" to property.moodTags.map { mood -> db.collection("moods").document(mood.id) },
                 "opening_hours" to property.openingHours.toString(),
                 "closing_hours" to property.closingHours.toString(),
-                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) } // Save as DocumentReferences
+                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) },
+                "owner" to db.collection("profiles").document(property.owner.id)
             )
         ).await()
     }

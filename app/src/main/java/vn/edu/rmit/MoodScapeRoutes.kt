@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.user.OwnerPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
@@ -30,6 +31,9 @@ object RegisterRoute
 
 @Serializable
 object LandingRoute
+
+@Serializable
+object OwnerRoute
 
 @Serializable
 object TravelerRoute
@@ -51,6 +55,12 @@ data class PropertyRoute(val id: String)
 
 @Serializable
 data class BookingRoute(val id: String)
+
+@Serializable
+object OwnerHomeRoute
+
+@Serializable
+object OwnerPropertyRoute
 
 
 @Composable
@@ -74,6 +84,10 @@ fun MoodScapeRoutes(
             "traveler" -> {
                 startDestination = TravelerRoute
                 navigateRoute = TravelerRoute
+            }
+            "owner" -> {
+                startDestination = OwnerRoute
+                navigateRoute = OwnerRoute
             }
         }
     }
@@ -104,7 +118,7 @@ fun MoodScapeRoutes(
             }
             composable<LoginRoute> {
                 LoginScreen(
-                    onLoginComplete = { role ->
+                    onLoginComplete = {
                         navController.navigate(navigateRoute) {
                             popUpTo(AuthenticationRoute) {
                                 inclusive = true
@@ -118,6 +132,25 @@ fun MoodScapeRoutes(
                             }
                         }
                     })
+            }
+        }
+
+        navigation<OwnerRoute>(startDestination = OwnerHomeRoute) {
+            composable<OwnerHomeRoute> {
+                HomeScreen(
+                    onLogout = {
+                        navController.navigate(AuthenticationRoute) {
+                            popUpTo(LandingRoute) { inclusive = true }
+                        }
+                        onLogoutSuccess()
+                    },
+                    onReservationClick = { },
+                    onDonationClick = { }
+                )
+            }
+
+            composable<OwnerPropertyRoute> {
+                OwnerPropertyScreen()
             }
         }
 

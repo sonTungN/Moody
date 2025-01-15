@@ -45,6 +45,7 @@ class AccountServiceImpl @Inject constructor(
                     roleService.documentToRole(it)
                 }?.first() ?: Role(),
             booking = document.get("booking") as? List<String> ?: emptyList(),
+            ownedProperties = document.get("ownedProperties") as? List<String> ?: emptyList(),
             savedProperties = document.get("savedProperties") as? List<String> ?: emptyList()
         )
     }
@@ -124,7 +125,8 @@ class AccountServiceImpl @Inject constructor(
         val profileData = hashMapOf(
             "name" to profile.fullName,
             "role" to profile.role.let { db.collection("roles").document(it.id) }, // Convert Role to DocumentReference
-            "booking" to profile.booking
+            "booking" to profile.booking,
+            "ownedProperties" to profile.ownedProperties
         )
         profileRef.document(profile.id).set(profileData).await()
     }
