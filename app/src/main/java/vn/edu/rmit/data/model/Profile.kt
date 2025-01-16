@@ -1,5 +1,6 @@
 package vn.edu.rmit.data.model
 
+import com.google.firebase.firestore.DocumentReference
 import vn.edu.rmit.data.model.type.Role
 
 data class Profile(
@@ -12,4 +13,6 @@ data class Profile(
     val role: Role = Role(),
 
     val booking: List<String> = emptyList(),
+    val ownedProperties: List<String> = emptyList(),
+    val savedProperties: List<String> = emptyList(),
 )

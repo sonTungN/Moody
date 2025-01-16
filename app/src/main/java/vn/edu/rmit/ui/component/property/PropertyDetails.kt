@@ -19,8 +19,8 @@ fun PropertyDetails(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(property.name, style = MaterialTheme.typography.headlineMedium)
-        Text(property.address, style = MaterialTheme.typography.bodyMedium)
+        Text(property.name, style = MaterialTheme.typography.titleLarge)
+        Text(property.address, style = MaterialTheme.typography.bodySmall)
         MoodTagSection(property.moodTags.map { it.name })
     }
 }
