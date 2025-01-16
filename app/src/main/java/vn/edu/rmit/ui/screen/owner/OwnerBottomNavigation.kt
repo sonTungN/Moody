@@ -1,10 +1,10 @@
-package vn.edu.rmit.ui.screen.user
+package vn.edu.rmit.ui.screen.owner
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.AddLocation
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Hotel
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -13,15 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import vn.edu.rmit.HomeRoute
-import vn.edu.rmit.PropertyLocationRoute
+import vn.edu.rmit.OwnerPropertyRoute
+import vn.edu.rmit.OwnerReservePropertyRoute
 import vn.edu.rmit.R
-import vn.edu.rmit.ReservationRoute
-import vn.edu.rmit.SavePropertyRoute
-import vn.edu.rmit.SettingsRoute
 
 @Composable
-fun UserBottomNavigation(
+fun OwnerBottomNavigation(
     currentScreen: String?,
     navigate: (Any) -> Unit,
     modifier: Modifier = Modifier
@@ -44,13 +43,13 @@ fun UserBottomNavigation(
         NavigationBarItem(
             icon = {
                 Icon(
-                    Icons.Filled.Search,
-                    contentDescription = stringResource(R.string.search)
+                    Icons.Filled.AddLocation,
+                    contentDescription = stringResource(R.string.add)
                 )
             },
-            label = { Text(stringResource(R.string.search)) },
-            selected = currentScreen == PropertyLocationRoute::class.qualifiedName,
-            onClick = { navigate(PropertyLocationRoute) }
+            label = { Text(stringResource(R.string.add)) },
+            selected = false,
+            onClick = {}
 
 //            selected = currentScreen == HistoryRoute::class.qualifiedName,
 //            onClick = { navigate(HistoryRoute) }
@@ -60,26 +59,27 @@ fun UserBottomNavigation(
             icon = {
                 Icon(
                     Icons.Filled.Hotel,
-                    contentDescription = stringResource(R.string.reserved)
+                    contentDescription = stringResource(R.string.properties)
                 )
             },
-            label = { Text(stringResource(R.string.reserved)) },
-            selected = currentScreen == ReservationRoute::class.qualifiedName,
-            onClick = { navigate(ReservationRoute) }
+            label = { Text(stringResource(R.string.properties)) },
+            selected = currentScreen == OwnerPropertyRoute::class.qualifiedName,
+            onClick = { navigate(OwnerPropertyRoute) }
         )
 
         NavigationBarItem(
             icon = {
                 Icon(
-                    Icons.Filled.Bookmark,
-                    contentDescription = stringResource(R.string.saved)
+                    Icons.Filled.Book,
+                    contentDescription = stringResource(R.string.booking)
                 )
             },
-            label = { Text(stringResource(R.string.saved)) },
-            selected = currentScreen == SavePropertyRoute::class.qualifiedName,
-            onClick = { navigate(SavePropertyRoute) }
+            label = { Text(stringResource(R.string.booking)) },
+            selected = currentScreen == OwnerReservePropertyRoute::class.qualifiedName,
+            onClick = { navigate(OwnerReservePropertyRoute) }
 
         )
+
         NavigationBarItem(
             icon = {
                 Icon(
@@ -88,8 +88,20 @@ fun UserBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.settings)) },
-            selected = currentScreen == SettingsRoute::class.qualifiedName,
-            onClick = { navigate(SettingsRoute) }
+            selected = false,
+            onClick = {}
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OwnerBottomNavigationPreview() {
+    OwnerBottomNavigation(
+        currentScreen = HomeRoute::class.qualifiedName,
+        navigate = { route ->
+
+        }
+    )
+
 }

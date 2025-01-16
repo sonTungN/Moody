@@ -2,6 +2,7 @@ package vn.edu.rmit.data.service.impl
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.snapshots
@@ -31,7 +32,6 @@ class AccountServiceImpl @Inject constructor(
         get() = auth.currentUser !== null
 
     override suspend fun documentToProfile(document: DocumentSnapshot): Profile {
-
         return Profile(
             id = document.id,
             fullName = document.getString("name") ?: "",
@@ -44,6 +44,9 @@ class AccountServiceImpl @Inject constructor(
                 ?.map {
                     roleService.documentToRole(it)
                 }?.first() ?: Role(),
+            booking = document.get("booking") as? List<String> ?: emptyList(),
+            ownedProperties = document.get("ownedProperties") as? List<String> ?: emptyList(),
+            savedProperties = document.get("savedProperties") as? List<String> ?: emptyList()
         )
     }
 
@@ -88,8 +91,7 @@ class AccountServiceImpl @Inject constructor(
     }
 
     override suspend fun getProfile(): Profile? = auth.currentUser?.let {
-        profileRef.document(it.uid).get().await().let { documentToProfile(
-            it) }
+        profileRef.document(it.uid).get().await().let { documentToProfile(it) }
     }
 
     override suspend fun getProfileById(id: String): Profile {
@@ -122,7 +124,10 @@ class AccountServiceImpl @Inject constructor(
         val profileData = hashMapOf(
             "name" to profile.fullName,
             "role" to profile.role.let { db.collection("roles").document(it.id) }, // Convert Role to DocumentReference
-            "booking" to profile.booking
+            "booking" to profile.booking,
+            "ownedProperties" to profile.ownedProperties,
+            "savedProperties" to profile.savedProperties
+
         )
         profileRef.document(profile.id).set(profileData).await()
     }

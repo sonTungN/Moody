@@ -31,7 +31,7 @@ class PropertyServiceImpl @Inject constructor(
     private val propertyRef = db.collection("properties")
 
     override suspend fun documentToProperty(document: DocumentSnapshot): Property {
-        val geoPoint = document.getGeoPoint("geopoint")
+        val geoPoint = document.getGeoPoint("geoPoint")
 
         val travelers =
             document.get("travelers")?.let {
@@ -114,7 +114,8 @@ class PropertyServiceImpl @Inject constructor(
                 "mood_tags" to property.moodTags.map { mood -> db.collection("moods").document(mood.id) },
                 "opening_hours" to property.openingHours.toString(),
                 "closing_hours" to property.closingHours.toString(),
-                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) } // Save as DocumentReferences
+                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) },
+                "owner" to property.owner
             )
         ).await()
     }

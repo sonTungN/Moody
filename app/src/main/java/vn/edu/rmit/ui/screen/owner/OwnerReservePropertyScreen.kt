@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.user.reserve
+package vn.edu.rmit.ui.screen.owner
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.ui.component.property.PropertyReservation
+import vn.edu.rmit.ui.screen.user.OwnerReservePropertyScreenViewModel
 
 @Composable
-fun ReserveScreen(
+fun OwnerReservedPropertyScreen(
 //    id: String,
-    viewModel: ReserveScreenViewModel = hiltViewModel(),
+    viewModel: OwnerReservePropertyScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()

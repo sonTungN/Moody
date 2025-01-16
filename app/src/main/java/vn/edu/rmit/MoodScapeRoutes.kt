@@ -12,11 +12,17 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
+import vn.edu.rmit.ui.screen.user.location.LocationScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
+import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
+import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
+import vn.edu.rmit.ui.screen.user.settings.SettingScreen
 
 @Serializable
 object AuthenticationRoute
@@ -37,7 +43,25 @@ object TravelerRoute
 object HomeRoute
 
 @Serializable
+object PropertyLocationRoute
+
+@Serializable
+object OwnerRoute
+
+@Serializable
 object MoodFilterRoute
+
+@Serializable
+object SettingsRoute
+
+@Serializable
+object ReservationRoute
+
+@Serializable
+object SavePropertyRoute
+
+@Serializable
+object PaymentRoute
 
 @Serializable
 data class SlideVideoPagerRoute(val selectedMoods: List<String>)
@@ -47,6 +71,15 @@ data class PropertyRoute(val id: String)
 
 @Serializable
 data class BookingRoute(val id: String)
+
+@Serializable
+object OwnerHomeRoute
+
+@Serializable
+object OwnerPropertyRoute
+
+@Serializable
+object OwnerReservePropertyRoute
 
 @Composable
 fun MoodScapeRoutes(
@@ -70,6 +103,10 @@ fun MoodScapeRoutes(
                 startDestination = TravelerRoute
                 navigateRoute = TravelerRoute
             }
+            "owner" -> {
+                startDestination = OwnerRoute
+                navigateRoute = OwnerRoute
+            }
         }
     }
 
@@ -79,7 +116,6 @@ fun MoodScapeRoutes(
         modifier = modifier,
     ) {
         navigation<AuthenticationRoute>(startDestination = LoginRoute) {
-
             composable<RegisterRoute> {
                 RegisterScreen(
                     onRegisterComplete = {
@@ -117,6 +153,23 @@ fun MoodScapeRoutes(
             }
         }
 
+        navigation<OwnerRoute>(startDestination = OwnerHomeRoute) {
+            composable<OwnerHomeRoute> {
+                HomeScreen(
+                    onReservationClick = { },
+                    onDonationClick = { }
+                )
+            }
+
+            composable<OwnerPropertyRoute> {
+                OwnerPropertyScreen()
+            }
+
+            composable<OwnerReservePropertyRoute> {
+                OwnerReservedPropertyScreen()
+            }
+        }
+
         navigation<TravelerRoute>(startDestination = MoodFilterRoute) {
             composable<MoodFilterRoute> {
                 MoodScreen(
@@ -141,16 +194,21 @@ fun MoodScapeRoutes(
 
             composable<HomeRoute> {
                 HomeScreen(
-                    onScheduleClick = {},
+                    onReservationClick = {},
                     onDonationClick = { id -> },
-                    onLogout = {
-                        navController.navigate(AuthenticationRoute) {
-                            popUpTo(LandingRoute) {
-                                inclusive = true
-                            }
-                        }
-                        onLogoutSuccess()
-                    })
+                )
+            }
+
+            composable<PropertyLocationRoute> {
+                LocationScreen(
+                    onPropertyClick = { property ->
+                        navController.navigate(PropertyRoute(id = property.id))
+                    }
+                )
+            }
+
+            composable<ReservationRoute> {
+                ReserveScreen()
             }
 
             composable<PropertyRoute> { backStackEntry ->
@@ -161,8 +219,17 @@ fun MoodScapeRoutes(
 
             composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
+                BookingScreen(
+                    route.id,
+                    onReservedClick = { navController.navigate(PaymentRoute)}
+                )
+            }
 
-                BookingScreen(route.id)
+            composable<SavePropertyRoute> {
+                SavedPropertyScreen()
+            }
+
+            composable<PaymentRoute> {
 
             }
         }
@@ -175,6 +242,19 @@ fun MoodScapeRoutes(
                     }
                 }
             })
+        }
+
+        composable<SettingsRoute> {
+            SettingScreen(
+                onLogoutSuccess = {
+                    navController.navigate(AuthenticationRoute) {
+                        popUpTo(LandingRoute) {
+                            inclusive = true
+                        }
+                    }
+                    onLogoutSuccess()
+                }
+            )
         }
     }
 }

@@ -29,22 +29,14 @@ fun ActionButton(
     contentDescription: String,
     modifier: Modifier = Modifier
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isHovered by interactionSource.collectIsHoveredAsState()
-
     OutlinedButton(
         onClick = onClick,
-//        modifier = modifier
-//            .hoverable(interactionSource),
         modifier = modifier,
         shape = RoundedCornerShape(6.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Black,
             contentColor = Color.White
         ),
-//        border = ButtonDefaults.outlinedButtonBorder.copy(
-//            brush = SolidColor(if (isHovered) Color.White else Color.Gray)
-//        )
         border = ButtonDefaults.outlinedButtonBorder.copy(
             brush = SolidColor(Color.White)
         )

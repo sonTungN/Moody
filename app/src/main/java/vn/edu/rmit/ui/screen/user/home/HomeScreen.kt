@@ -15,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -30,8 +29,7 @@ import vn.edu.rmit.ui.theme.AppTypography
 
 @Composable
 fun HomeScreen(
-    onLogout: () -> Unit,
-    onScheduleClick: () -> Unit,
+    onReservationClick: () -> Unit,
     onDonationClick: (id: String) -> Unit,
     viewModel: HomeScreenViewModel = hiltViewModel(),
     landingViewModel: LandingScreenViewModel = hiltViewModel(),
@@ -91,17 +89,11 @@ fun HomeScreen(
                 )
             }
         }
-
-        FilledTonalButton(
-            onClick = { landingViewModel.logout(onLogout) }, modifier = modifier.padding(16.dp)
-        ) {
-            Text(stringResource(R.string.logout))
-        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen(onScheduleClick = {}, onDonationClick = {}, onLogout = {})
+    HomeScreen(onReservationClick = {}, onDonationClick = {})
 }

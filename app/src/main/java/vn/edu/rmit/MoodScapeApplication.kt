@@ -1,6 +1,5 @@
 package vn.edu.rmit
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -13,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import vn.edu.rmit.ui.screen.owner.OwnerBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserTopBar
 
@@ -32,8 +32,8 @@ fun MoodScapeApplication(
 
     val isVisibleBar = !(
             currentScreen?.startsWith(MoodFilterRoute::class.qualifiedName ?: "") == true ||
-            currentScreen?.startsWith(SlideVideoPagerRoute::class.qualifiedName ?: "") == true
-    )
+                    currentScreen?.startsWith(SlideVideoPagerRoute::class.qualifiedName ?: "") == true
+            )
 
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -44,7 +44,7 @@ fun MoodScapeApplication(
                 )
         },
         bottomBar = {
-            if (viewModel.authenticated() && isVisibleBar)
+            if (viewModel.authenticated() && isVisibleBar) {
                 if (uiState.profile.role.id == "traveler")
                     UserBottomNavigation(
                         currentScreen = currentScreen,
@@ -53,6 +53,15 @@ fun MoodScapeApplication(
                             navController.navigate(screen)
                         }
                     )
+                if (uiState.profile.role.id == "owner")
+                    OwnerBottomNavigation(
+                        currentScreen = currentScreen,
+                        navigate = { screen ->
+                            navController.popBackStack(screen, inclusive = true)
+                            navController.navigate(screen)
+                        }
+                    )
+            }
         }
     )
     { innerPadding ->

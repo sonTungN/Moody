@@ -40,12 +40,12 @@ fun VideoActionButtons(
             modifier = Modifier.weight(1f),
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = stringResource(R.string.view_details),
+                imageVector = Icons.Default.CalendarToday,
+                contentDescription = stringResource(R.string.book),
                 modifier = Modifier.size(ButtonDefaults.IconSize),
             )
             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = stringResource(R.string.view_details))
+            Text(text = stringResource(R.string.book))
         }
 
         Button(
@@ -53,12 +53,12 @@ fun VideoActionButtons(
             modifier = Modifier.weight(1f),
         ) {
             Icon(
-                imageVector = Icons.Default.CalendarToday,
-                contentDescription = stringResource(R.string.book),
+                imageVector = Icons.Default.Info,
+                contentDescription = stringResource(R.string.view_details),
                 modifier = Modifier.size(ButtonDefaults.IconSize),
             )
             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = stringResource(R.string.book))
+            Text(text = stringResource(R.string.view_details))
         }
 
     }
