@@ -50,8 +50,10 @@ fun VideoPagerScreen(
             val video = uiState.videos[page]
             VideoDetailScreen(
                 video = video,
+                filterCount = selectedMoods.size,
                 onBookingClick = onBookingClick,
-                onDetailClick = onDetailClick
+                onDetailClick = onDetailClick,
+                onFilterClick = { moodDialogOpen = true },
             )
         }
     }
