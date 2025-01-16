@@ -55,6 +55,7 @@ object SavePropertyRoute
 
 @Serializable
 data class PaymentRoute(
+    val id: String,
     val startDate: String,
     val endDate: String,
     val amount: String
@@ -224,7 +225,7 @@ fun MoodScapeRoutes(
                 BookingScreen(
                     id = route.id,
                     onReservedClick = { startDate, endDate, amount ->
-                        navController.navigate(PaymentRoute(startDate, endDate, amount))
+                        navController.navigate(PaymentRoute(route.id, startDate, endDate, amount))
                     }
                 )
             }
@@ -237,6 +238,7 @@ fun MoodScapeRoutes(
                 val route: PaymentRoute = backStackEntry.toRoute()
 
                 PaymentScreen(
+                    id = route.id,
                     startDate = route.startDate,
                     endDate = route.endDate,
                     amount = route.amount,

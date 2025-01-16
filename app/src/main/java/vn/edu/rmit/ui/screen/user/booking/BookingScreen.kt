@@ -112,7 +112,6 @@ fun BookingScreen(
                     val startDate = selectedDateRange?.first?.let { getFormattedDate(it) } ?: ""
                     val endDate = selectedDateRange?.second?.let { getFormattedDate(it) } ?: ""
                     onReservedClick(startDate, endDate, selectedRoomAmount.toString())
-                    viewModel.reserveProperty(uiState.property.id)
               },
                 modifier = Modifier.align(Alignment.End)
             ) {
