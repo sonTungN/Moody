@@ -126,7 +126,8 @@ class AccountServiceImpl @Inject constructor(
             "name" to profile.fullName,
             "role" to profile.role.let { db.collection("roles").document(it.id) }, // Convert Role to DocumentReference
             "booking" to profile.booking,
-            "ownedProperties" to profile.ownedProperties
+            "ownedProperties" to profile.ownedProperties,
+            "savedProperties" to profile.savedProperties
         )
         profileRef.document(profile.id).set(profileData).await()
     }

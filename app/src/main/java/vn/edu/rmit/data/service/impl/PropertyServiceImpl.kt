@@ -115,7 +115,7 @@ class PropertyServiceImpl @Inject constructor(
                 "opening_hours" to property.openingHours.toString(),
                 "closing_hours" to property.closingHours.toString(),
                 "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) },
-                "owner" to db.collection("profiles").document(property.owner.id)
+                "owner" to property.owner
             )
         ).await()
     }

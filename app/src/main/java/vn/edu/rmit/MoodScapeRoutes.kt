@@ -13,10 +13,12 @@ import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
 import vn.edu.rmit.ui.screen.user.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.user.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
+import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 
@@ -48,6 +50,12 @@ object MoodFilterRoute
 object ReservationRoute
 
 @Serializable
+object SavePropertyRoute
+
+@Serializable
+object PaymentRoute
+
+@Serializable
 data class SlideVideoPagerRoute (val selectedMoods: List<String>)
 
 @Serializable
@@ -62,6 +70,8 @@ object OwnerHomeRoute
 @Serializable
 object OwnerPropertyRoute
 
+@Serializable
+object OwnerReservePropertyRoute
 
 @Composable
 fun MoodScapeRoutes(
@@ -118,7 +128,7 @@ fun MoodScapeRoutes(
             }
             composable<LoginRoute> {
                 LoginScreen(
-                    onLoginComplete = {
+                    onLoginComplete = {role ->
                         navController.navigate(navigateRoute) {
                             popUpTo(AuthenticationRoute) {
                                 inclusive = true
@@ -151,6 +161,10 @@ fun MoodScapeRoutes(
 
             composable<OwnerPropertyRoute> {
                 OwnerPropertyScreen()
+            }
+
+            composable<OwnerReservePropertyRoute> {
+                OwnerReservedPropertyScreen()
             }
         }
 
@@ -206,7 +220,18 @@ fun MoodScapeRoutes(
             composable<BookingRoute> {backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
 
-                BookingScreen(route.id)
+                BookingScreen(
+                    route.id,
+                    onReservedClick = { navController.navigate(PaymentRoute)}
+                )
+            }
+
+            composable<SavePropertyRoute> {
+                SavedPropertyScreen()
+            }
+
+            composable<PaymentRoute> {
+
             }
         }
 

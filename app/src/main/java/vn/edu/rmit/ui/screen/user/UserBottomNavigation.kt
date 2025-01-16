@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import vn.edu.rmit.HomeRoute
 import vn.edu.rmit.R
 import vn.edu.rmit.ReservationRoute
+import vn.edu.rmit.SavePropertyRoute
 
 @Composable
 fun UserBottomNavigation(
@@ -69,12 +70,12 @@ fun UserBottomNavigation(
             icon = {
                 Icon(
                     Icons.Filled.Bookmark,
-                    contentDescription = stringResource(R.string.save)
+                    contentDescription = stringResource(R.string.saved)
                 )
             },
-            label = { Text(stringResource(R.string.save)) },
-            selected = false,
-            onClick = {}
+            label = { Text(stringResource(R.string.saved)) },
+            selected = currentScreen == SavePropertyRoute::class.qualifiedName,
+            onClick = { navigate(SavePropertyRoute) }
 
         )
         NavigationBarItem(
@@ -86,7 +87,7 @@ fun UserBottomNavigation(
             },
             label = { Text(stringResource(R.string.settings)) },
             selected = false,
-            onClick = {}
+            onClick = {  }
         )
     }
 }

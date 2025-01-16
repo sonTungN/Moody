@@ -40,7 +40,7 @@ import vn.edu.rmit.ui.component.select.getFormattedDate
 @Composable
 fun BookingScreen(
     id: String,
-//    navController: NavHostController = rememberNavController(),
+    onReservedClick: () -> Unit,
     viewModel: BookingScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -108,8 +108,8 @@ fun BookingScreen(
             }
             Button(
                 onClick = {
+                    onReservedClick()
                     viewModel.reserveProperty(uiState.property.id)
-//                    navController.navigate(ReservationRoute)
               },
                 modifier = Modifier.align(Alignment.End)
             ) {

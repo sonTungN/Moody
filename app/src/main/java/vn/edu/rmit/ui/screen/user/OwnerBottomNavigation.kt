@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import vn.edu.rmit.HomeRoute
 import vn.edu.rmit.OwnerPropertyRoute
+import vn.edu.rmit.OwnerReservePropertyRoute
 import vn.edu.rmit.R
 
 @Composable
@@ -74,8 +75,8 @@ fun OwnerBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.booking)) },
-            selected = false,
-            onClick = {}
+            selected = currentScreen == OwnerReservePropertyRoute::class.qualifiedName,
+            onClick = { navigate(OwnerReservePropertyRoute) }
 
         )
 

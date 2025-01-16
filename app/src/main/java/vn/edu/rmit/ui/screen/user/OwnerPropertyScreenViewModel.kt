@@ -35,12 +35,10 @@ class OwnerPropertyScreenViewModel @Inject constructor(
             profile?.let { userProfile ->
                 val properties = propertyService.getProperties().first()
 
-                // Filter properties by ownedProperty IDs
                 val ownerProperties = properties.filter { property ->
                     userProfile.ownedProperties.contains(property.id)
                 }
 
-                // Update UI state
                 _uiState.update { state ->
                     state.copy(properties = ownerProperties)
                 }
