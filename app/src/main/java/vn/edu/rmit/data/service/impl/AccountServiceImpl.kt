@@ -111,7 +111,7 @@ class AccountServiceImpl @Inject constructor(
         db.collection("profiles").document(id).set(
             hashMapOf(
                 "name" to profile.fullName,
-                "role" to profile.role.let { db.collection("roles").document(it.id) },
+                "role" to profile.role.let { db.collection("roles").document(it.id) }
             )
         )
         return id

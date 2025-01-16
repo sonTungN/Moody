@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import vn.edu.rmit.ui.screen.user.OwnerBottomNavigation
+import vn.edu.rmit.ui.screen.owner.OwnerBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserTopBar
 

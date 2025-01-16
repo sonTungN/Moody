@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.user
+package vn.edu.rmit.ui.screen.owner
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddLocation

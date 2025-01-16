@@ -12,11 +12,12 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
-import vn.edu.rmit.ui.screen.user.OwnerPropertyScreen
-import vn.edu.rmit.ui.screen.user.OwnerReservedPropertyScreen
+import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
+import vn.edu.rmit.ui.screen.user.payment.PaymentScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
@@ -53,8 +54,11 @@ object ReservationRoute
 object SavePropertyRoute
 
 @Serializable
-object PaymentRoute
-
+data class PaymentRoute(
+    val startDate: String,
+    val endDate: String,
+    val amount: String
+)
 @Serializable
 data class SlideVideoPagerRoute(val selectedMoods: List<String>)
 
@@ -216,10 +220,12 @@ fun MoodScapeRoutes(
 
             composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
-
+                
                 BookingScreen(
-                    route.id,
-                    onReservedClick = { navController.navigate(PaymentRoute)}
+                    id = route.id,
+                    onReservedClick = { startDate, endDate, amount ->
+                        navController.navigate(PaymentRoute(startDate, endDate, amount))
+                    }
                 )
             }
 
@@ -227,8 +233,17 @@ fun MoodScapeRoutes(
                 SavedPropertyScreen()
             }
 
-            composable<PaymentRoute> {
+            composable<PaymentRoute> {backStackEntry ->
+                val route: PaymentRoute = backStackEntry.toRoute()
 
+                PaymentScreen(
+                    startDate = route.startDate,
+                    endDate = route.endDate,
+                    amount = route.amount,
+                    onPaymentComplete = { cardNumber, expiryDate, cvv, couponCode ->
+                        // Handle payment completion logic here
+                    }
+                )
             }
         }
 

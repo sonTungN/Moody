@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import vn.edu.rmit.R
+import vn.edu.rmit.data.model.Profile
 import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.component.button.ActionButton
@@ -35,7 +36,8 @@ import vn.edu.rmit.ui.component.button.ActionButton
 
 @Composable
 fun RoomDetails(
-    property: Property
+    property: Property,
+    profile: Profile
 ) {
     val isSaved = remember { mutableStateOf(false) }
 
@@ -66,15 +68,35 @@ fun RoomDetails(
                         )
                     }
                 }
-                ActionButton(
-                    onClick = {
-                        isSaved.value = !isSaved.value
-                    },
-                    icon = if (isSaved.value) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
-                    text = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
-                    contentDescription = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
-                    modifier = Modifier
-                )
+                if (profile.savedProperties.contains(property.id)) {
+                    ActionButton(
+                        onClick = {
+                            isSaved.value = !isSaved.value
+                            if (isSaved.value) {
+                                profile.savedProperties + property.id
+                            }
+                        },
+                        icon = if (isSaved.value) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
+                        text = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
+                        contentDescription = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
+                        modifier = Modifier
+                    )
+
+                } else {
+                    ActionButton(
+                        onClick = {
+                            isSaved.value = !isSaved.value
+                            if (!isSaved.value) {
+                                profile.savedProperties - property.id
+                            }
+                        },
+                        icon = if (isSaved.value) Icons.Filled.Bookmark else Icons.Filled.BookmarkBorder,
+                        text = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
+                        contentDescription = if (isSaved.value) stringResource(R.string.saved) else stringResource(R.string.save),
+                        modifier = Modifier
+                    )
+                }
+
             }
 
             Image(
@@ -98,6 +120,7 @@ fun RoomDetailsPreview() {
                 Mood(name = "Happy"),
                 Mood(name = "Sad"),
             )
-        )
+        ),
+        Profile()
     )
 }

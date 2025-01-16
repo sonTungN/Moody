@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.R
+import vn.edu.rmit.data.model.Profile
 import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.component.button.ActionButton
@@ -40,14 +41,14 @@ import vn.edu.rmit.ui.component.select.getFormattedDate
 @Composable
 fun BookingScreen(
     id: String,
-    onReservedClick: () -> Unit,
+    onReservedClick: (startDate: String, endDate: String, amount: String) -> Unit,
     viewModel: BookingScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     var selectedDateRange by remember { mutableStateOf<Pair<Long?, Long?>?>(null) }
-    var selectedRooms by remember { mutableStateOf(1) }
+    var selectedRoomAmount by remember { mutableStateOf(1) }
     var showDateModal by remember { mutableStateOf(false) }
     var showRoomModal by remember { mutableStateOf(false) }
 
@@ -69,7 +70,7 @@ fun BookingScreen(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            RoomDetails(uiState.property)
+            RoomDetails(uiState.property, uiState.profile)
 
             val dateRangeText = if (selectedDateRange != null) {
                 val (startDate, endDate) = selectedDateRange!!
@@ -101,14 +102,16 @@ fun BookingScreen(
                 ActionButton(
                     onClick = { showRoomModal = true },
                     icon = Icons.Filled.Chair,
-                    text = stringResource(R.string.select_room_amount) + " " + selectedRooms.toString(),
+                    text = stringResource(R.string.select_room_amount) + " " + selectedRoomAmount.toString(),
                     contentDescription = "select room amount",
                     modifier = Modifier
                 )
             }
             Button(
                 onClick = {
-                    onReservedClick()
+                    val startDate = selectedDateRange?.first?.let { getFormattedDate(it) } ?: ""
+                    val endDate = selectedDateRange?.second?.let { getFormattedDate(it) } ?: ""
+                    onReservedClick(startDate, endDate, selectedRoomAmount.toString())
                     viewModel.reserveProperty(uiState.property.id)
               },
                 modifier = Modifier.align(Alignment.End)
@@ -127,10 +130,10 @@ fun BookingScreen(
             }
             if (showRoomModal) {
                 RoomPickerModal(
-                    initialRooms = selectedRooms,
+                    initialRooms = selectedRoomAmount,
                     onDismiss = { showRoomModal = false },
                     onConfirm = { rooms ->
-                        selectedRooms = rooms
+                        selectedRoomAmount = rooms
                         showRoomModal = false
                     }
                 )
@@ -151,6 +154,6 @@ fun BookingScreenPreview() {
                 Mood(name = "Happy"),
                 Mood(name = "Sad"),
             )
-        )
+        ), Profile()
     )
 }

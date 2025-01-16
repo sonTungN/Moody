@@ -37,4 +37,20 @@
     <string name="skip">Skip</string>
     <string name="properties">Properties</string>
     <string name="add">Add</string>
+    <string name="payment_details">Payment Details</string>
+    <string name="order_details">Order Details</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="property">Property</string>
+    <string name="amount">Amount</string>
+    <string name="coupon_code">Coupon Code</string>
+    <string name="invalid_coupon_code">Invalid coupon code.</string>
+    <string name="apply">Apply</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date_mm_yy">Expiry Date (MM/YY)</string>
+    <string name="cvv">CVV</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="complete_payment">Complete Payment</string>
+    <string name="coupon">Coupon</string>
 </resources>
