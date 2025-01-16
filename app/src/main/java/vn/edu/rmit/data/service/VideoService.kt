@@ -8,6 +8,6 @@ interface VideoService {
     suspend fun documentToVideo(document: DocumentSnapshot): Video
     suspend fun getVideoById(id: String): Video
     fun getVideoByPropertyId(propertyId: String): Flow<List<Video>>
-    fun getVideos(): Flow<List<Video>>
+    fun getVideos(moods: List<String> = emptyList()): Flow<List<Video>>
     fun getCurrentUserSavedVideos(): Flow<List<Video>>
 }

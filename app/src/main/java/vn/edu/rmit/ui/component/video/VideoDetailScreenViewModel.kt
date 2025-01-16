@@ -33,31 +33,33 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
         videoPlayer.apply {
             repeatMode = REPEAT_MODE_ONE
             playWhenReady = true
-            videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+            videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
             volume = 1f
         }
     }
 
     fun observeVideoDetailActionStatus(videoId: String) {
         viewModelScope.launch {
-            videoActionService.observeVideoReactions(videoId).collect {
-                reactCount -> _uiState.update { it.copy(reactCount = reactCount) }
+            videoActionService.observeVideoReactions(videoId).collect { reactCount ->
+                _uiState.update { it.copy(reactCount = reactCount) }
             }
         }
 
         viewModelScope.launch {
             auth.currentUser?.uid.let { id ->
-                videoActionService.observeUserReactedVideo(videoId, id!!).collect {
-                    recentReactStatus -> _uiState.update { it.copy(reactStatus = recentReactStatus) }
-                }
+                videoActionService.observeUserReactedVideo(videoId, id!!)
+                    .collect { recentReactStatus ->
+                        _uiState.update { it.copy(reactStatus = recentReactStatus) }
+                    }
             }
         }
 
         viewModelScope.launch {
             auth.currentUser?.uid.let { id ->
-                videoActionService.observeUserSavedVideo(videoId, id!!).collect {
-                    recentSaveStatus -> _uiState.update { it.copy(saveStatus = recentSaveStatus) }
-                }
+                videoActionService.observeUserSavedVideo(videoId, id!!)
+                    .collect { recentSaveStatus ->
+                        _uiState.update { it.copy(saveStatus = recentSaveStatus) }
+                    }
             }
         }
     }
@@ -75,9 +77,14 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
     }
 
     fun handleAction(action: VideoDetailAction) {
-        when(action) {
-            is VideoDetailAction.LoadData -> { loadVideo(action.videoUrl) }
-            is VideoDetailAction.ToggleVideo -> { toggleVideo() }
+        when (action) {
+            is VideoDetailAction.LoadData -> {
+                loadVideo(action.videoUrl)
+            }
+
+            is VideoDetailAction.ToggleVideo -> {
+                toggleVideo()
+            }
         }
     }
 
@@ -116,7 +123,7 @@ class VideoDetailViewModel @OptIn(UnstableApi::class)
     }
 }
 
-data class VideoDetailUiState (
+data class VideoDetailUiState(
     val playerState: VideoPlayerState = VideoPlayerState.Default,
     val reactCount: Int = 0,
     val reactStatus: Boolean = false,
@@ -125,12 +132,12 @@ data class VideoDetailUiState (
 
 sealed interface VideoPlayerState {
     data object Default : VideoPlayerState
-    data object Loading: VideoPlayerState
-    data object Success: VideoPlayerState
-    data class Error(val message: String): VideoPlayerState
+    data object Loading : VideoPlayerState
+    data object Success : VideoPlayerState
+    data class Error(val message: String) : VideoPlayerState
 }
 
 sealed class VideoDetailAction {
-    data class LoadData(val videoUrl: String): VideoDetailAction()
-    data object ToggleVideo: VideoDetailAction()
+    data class LoadData(val videoUrl: String) : VideoDetailAction()
+    data object ToggleVideo : VideoDetailAction()
 }

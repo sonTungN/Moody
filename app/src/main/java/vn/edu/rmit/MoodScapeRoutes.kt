@@ -40,13 +40,13 @@ object HomeRoute
 object MoodFilterRoute
 
 @Serializable
-data class SlideVideoPagerRoute (val selectedMoods: List<String>)
+data class SlideVideoPagerRoute(val selectedMoods: List<String>)
 
 @Serializable
 data class PropertyRoute(val id: String)
 
 @Serializable
-data class BookingRoute(val id:String)
+data class BookingRoute(val id: String)
 
 @Composable
 fun MoodScapeRoutes(
@@ -79,6 +79,7 @@ fun MoodScapeRoutes(
         modifier = modifier,
     ) {
         navigation<AuthenticationRoute>(startDestination = LoginRoute) {
+
             composable<RegisterRoute> {
                 RegisterScreen(
                     onRegisterComplete = {
@@ -128,16 +129,13 @@ fun MoodScapeRoutes(
                 )
             }
 
-            composable<SlideVideoPagerRoute> { backStackEntry ->
-                val route: SlideVideoPagerRoute = backStackEntry.toRoute()
-                Log.d("VideoPagerRoute", "selectedMoods: ${route.selectedMoods}")
+            composable<SlideVideoPagerRoute> {
                 SlideVideoPagerScreen(
                     onHomeCtaClick = {
                         navController.navigate(HomeRoute)
                     },
                     onDetailClick = { navController.navigate(PropertyRoute(it)) },
                     onBookingClick = { navController.navigate(BookingRoute(it)) },
-                    selectedMoods = route.selectedMoods
                 )
             }
 
@@ -161,7 +159,7 @@ fun MoodScapeRoutes(
                 PropertyScreen(route.id)
             }
 
-            composable<BookingRoute> {backStackEntry ->
+            composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
 
                 BookingScreen(route.id)

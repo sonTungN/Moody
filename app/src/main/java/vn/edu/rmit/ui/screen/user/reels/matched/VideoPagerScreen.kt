@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import vn.edu.rmit.data.model.type.Mood
+import vn.edu.rmit.ui.component.mood.MoodDialog
 import vn.edu.rmit.ui.component.video.VideoDetailScreen
-import vn.edu.rmit.ui.screen.user.reels.matched.VideoPagerViewModel
 
 @Composable
 fun VideoPagerScreen(
@@ -19,13 +22,24 @@ fun VideoPagerScreen(
     onBookingClick: (id: String) -> Unit,
     onDetailClick: (id: String) -> Unit,
     viewModel: VideoPagerViewModel = hiltViewModel(),
-    selectedMoods: List<String>
 ) {
-    val videos by viewModel.videos.collectAsState()
-    val pagerState = rememberPagerState(pageCount = { videos.size })
+    val uiState by viewModel.uiState.collectAsState()
+    val pagerState = rememberPagerState(pageCount = { uiState.videos.size })
 
-    LaunchedEffect(selectedMoods) {
-        viewModel.loadVideosForMoods(selectedMoods)
+    var moodDialogOpen by remember { mutableStateOf(true) }
+    var selectedMoods: List<Mood> by remember { mutableStateOf(emptyList()) }
+
+    if (moodDialogOpen) {
+        MoodDialog(
+            selected = selectedMoods.toSet(),
+            moods = uiState.moods,
+            onDismiss = { moodDialogOpen = false },
+            onConfirm = {
+                selectedMoods = it.toList()
+                moodDialogOpen = false
+                viewModel.loadVideosForMoods(selectedMoods)
+            }
+        )
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -33,7 +47,7 @@ fun VideoPagerScreen(
             state = pagerState,
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            val video = videos[page]
+            val video = uiState.videos[page]
             VideoDetailScreen(
                 video = video,
                 onBookingClick = onBookingClick,
