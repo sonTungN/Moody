@@ -29,7 +29,6 @@ import vn.edu.rmit.ui.theme.AppTypography
 
 @Composable
 fun HomeScreen(
-    onLogout: () -> Unit,
     onReservationClick: () -> Unit,
     onDonationClick: (id: String) -> Unit,
     viewModel: HomeScreenViewModel = hiltViewModel(),
@@ -90,17 +89,11 @@ fun HomeScreen(
                 )
             }
         }
-
-        FilledTonalButton(
-            onClick = { landingViewModel.logout(onLogout) }, modifier = modifier.padding(16.dp)
-        ) {
-            Text(stringResource(R.string.logout))
-        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen(onReservationClick = {}, onDonationClick = {}, onLogout = {})
+    HomeScreen(onReservationClick = {}, onDonationClick = {})
 }
