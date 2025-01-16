@@ -30,6 +30,8 @@ places = "4.1.0"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 secretsGradlePlugin = "2.0.1"
+stripeAndroid = "21.3.1"
+stripeJava = "28.0.0"
 uiTextGoogleFonts = "1.7.6"
 composeMaterialCore = "1.4.0"
 
@@ -45,6 +47,8 @@ androidx-media3-exoplayer-dash = { module = "androidx.media3:media3-exoplayer-da
 androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "media3Ui" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAndroid" }
+stripe-java = { module = "com.stripe:stripe-java", version.ref = "stripeJava" }
 supabase-bom = { module = "io.github.jan-tennert.supabase:bom", version.ref = "bom" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }

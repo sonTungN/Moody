@@ -105,6 +105,11 @@ dependencies {
     implementation(libs.storage.kt)
     implementation(libs.ktor.client.android)
 
+    // Stripe
+    // TODO: mock Server SDK
+    implementation(libs.stripe.java)
+    // Client SDK
+    implementation(libs.stripe.android)
 
     // Media3 ExoPLayer
     implementation(libs.androidx.media3.exoplayer)

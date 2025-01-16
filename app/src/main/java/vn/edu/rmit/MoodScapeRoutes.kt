@@ -20,6 +20,7 @@ import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.location.LocationScreen
+import vn.edu.rmit.ui.screen.user.payment.PaymentScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
@@ -247,7 +248,7 @@ fun MoodScapeRoutes(
             }
 
             composable<PaymentRoute> {
-
+                PaymentScreen()
             }
         }
 
