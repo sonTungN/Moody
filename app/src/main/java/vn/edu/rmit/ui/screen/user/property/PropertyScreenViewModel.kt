@@ -19,7 +19,7 @@ data class PropertyUiState(
 @HiltViewModel
 class PropertyScreenViewModel @Inject constructor(
     state: SavedStateHandle,
-    private val propertyService: PropertyService,
+    private val propertyService: PropertyService
 ): ViewModel() {
     val id = state.get<String>("id")
 

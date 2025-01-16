@@ -12,11 +12,15 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.user.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.user.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
+import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
+import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 
 @Serializable
 object AuthenticationRoute
@@ -31,6 +35,9 @@ object RegisterRoute
 object LandingRoute
 
 @Serializable
+object OwnerRoute
+
+@Serializable
 object TravelerRoute
 
 @Serializable
@@ -40,6 +47,15 @@ object HomeRoute
 object MoodFilterRoute
 
 @Serializable
+object ReservationRoute
+
+@Serializable
+object SavePropertyRoute
+
+@Serializable
+object PaymentRoute
+
+@Serializable
 data class SlideVideoPagerRoute(val selectedMoods: List<String>)
 
 @Serializable
@@ -47,6 +63,15 @@ data class PropertyRoute(val id: String)
 
 @Serializable
 data class BookingRoute(val id: String)
+
+@Serializable
+object OwnerHomeRoute
+
+@Serializable
+object OwnerPropertyRoute
+
+@Serializable
+object OwnerReservePropertyRoute
 
 @Composable
 fun MoodScapeRoutes(
@@ -70,6 +95,10 @@ fun MoodScapeRoutes(
                 startDestination = TravelerRoute
                 navigateRoute = TravelerRoute
             }
+            "owner" -> {
+                startDestination = OwnerRoute
+                navigateRoute = OwnerRoute
+            }
         }
     }
 
@@ -79,7 +108,6 @@ fun MoodScapeRoutes(
         modifier = modifier,
     ) {
         navigation<AuthenticationRoute>(startDestination = LoginRoute) {
-
             composable<RegisterRoute> {
                 RegisterScreen(
                     onRegisterComplete = {
@@ -117,6 +145,29 @@ fun MoodScapeRoutes(
             }
         }
 
+        navigation<OwnerRoute>(startDestination = OwnerHomeRoute) {
+            composable<OwnerHomeRoute> {
+                HomeScreen(
+                    onLogout = {
+                        navController.navigate(AuthenticationRoute) {
+                            popUpTo(LandingRoute) { inclusive = true }
+                        }
+                        onLogoutSuccess()
+                    },
+                    onReservationClick = { },
+                    onDonationClick = { }
+                )
+            }
+
+            composable<OwnerPropertyRoute> {
+                OwnerPropertyScreen()
+            }
+
+            composable<OwnerReservePropertyRoute> {
+                OwnerReservedPropertyScreen()
+            }
+        }
+
         navigation<TravelerRoute>(startDestination = MoodFilterRoute) {
             composable<MoodFilterRoute> {
                 MoodScreen(
@@ -141,7 +192,7 @@ fun MoodScapeRoutes(
 
             composable<HomeRoute> {
                 HomeScreen(
-                    onScheduleClick = {},
+                    onReservationClick = {},
                     onDonationClick = { id -> },
                     onLogout = {
                         navController.navigate(AuthenticationRoute) {
@@ -153,6 +204,10 @@ fun MoodScapeRoutes(
                     })
             }
 
+            composable<ReservationRoute> {
+                ReserveScreen()
+            }
+
             composable<PropertyRoute> { backStackEntry ->
                 val route: PropertyRoute = backStackEntry.toRoute()
 
@@ -162,7 +217,17 @@ fun MoodScapeRoutes(
             composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
 
-                BookingScreen(route.id)
+                BookingScreen(
+                    route.id,
+                    onReservedClick = { navController.navigate(PaymentRoute)}
+                )
+            }
+
+            composable<SavePropertyRoute> {
+                SavedPropertyScreen()
+            }
+
+            composable<PaymentRoute> {
 
             }
         }

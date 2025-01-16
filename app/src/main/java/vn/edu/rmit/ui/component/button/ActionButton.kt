@@ -36,7 +36,7 @@ fun ActionButton(
         onClick = onClick,
 //        modifier = modifier
 //            .hoverable(interactionSource),
-        modifier = modifier,
+        modifier = modifier.width(150.dp),
         shape = RoundedCornerShape(6.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Black,

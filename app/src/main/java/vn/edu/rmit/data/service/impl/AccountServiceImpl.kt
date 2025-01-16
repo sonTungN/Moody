@@ -18,7 +18,7 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore,
-    private val roleService: RoleService
+    private val roleService: RoleService,
 ) : AccountService {
     private val profileRef = db.collection("profiles")
 
@@ -44,6 +44,9 @@ class AccountServiceImpl @Inject constructor(
                 ?.map {
                     roleService.documentToRole(it)
                 }?.first() ?: Role(),
+            booking = document.get("booking") as? List<String> ?: emptyList(),
+            ownedProperties = document.get("ownedProperties") as? List<String> ?: emptyList(),
+            savedProperties = document.get("savedProperties") as? List<String> ?: emptyList()
         )
     }
 
@@ -122,7 +125,9 @@ class AccountServiceImpl @Inject constructor(
         val profileData = hashMapOf(
             "name" to profile.fullName,
             "role" to profile.role.let { db.collection("roles").document(it.id) }, // Convert Role to DocumentReference
-            "booking" to profile.booking
+            "booking" to profile.booking,
+            "ownedProperties" to profile.ownedProperties,
+            "savedProperties" to profile.savedProperties
         )
         profileRef.document(profile.id).set(profileData).await()
     }
