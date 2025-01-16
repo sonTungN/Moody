@@ -4,12 +4,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import kotlinx.coroutines.launch
+import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.component.tab_index.TabContentView
 import vn.edu.rmit.ui.screen.user.reels.matched.VideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reels.saved.SavedVideoPagerScreen
@@ -19,12 +21,14 @@ fun SlideVideoPagerScreen(
     onHomeCtaClick: () -> Unit,
     onBookingClick: (id: String) -> Unit,
     onDetailClick: (id: String) -> Unit,
+    initialSelectedMoods: List<String>,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
         pageCount = { 2 },
         initialPage = 1
     )
+
     val scrollToPager: (Boolean) -> Unit = { isMatchedVideos ->
         val pageIndex = if (isMatchedVideos) 1 else 0
         coroutineScope.launch {
@@ -48,15 +52,14 @@ fun SlideVideoPagerScreen(
         { pageIndex ->
             when (pageIndex) {
                 0 -> SavedVideoPagerScreen(
-                    onHomeCtaClick = onHomeCtaClick,
                     onBookingClick = onBookingClick,
                     onDetailClick = onDetailClick
                 )
 
                 1 -> VideoPagerScreen(
-                    onHomeCtaClick = onHomeCtaClick,
                     onBookingClick = onBookingClick,
                     onDetailClick = onDetailClick,
+                    initialSelectedMoods = initialSelectedMoods
                 )
             }
         }

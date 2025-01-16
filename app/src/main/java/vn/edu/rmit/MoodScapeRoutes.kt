@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
@@ -185,8 +186,10 @@ fun MoodScapeRoutes(
                 )
             }
 
-            composable<SlideVideoPagerRoute> {
+            composable<SlideVideoPagerRoute> { backStackEntry ->
+                val route: SlideVideoPagerRoute = backStackEntry.toRoute()
                 SlideVideoPagerScreen(
+                    initialSelectedMoods = route.selectedMoods,
                     onHomeCtaClick = {
                         navController.navigate(HomeRoute)
                     },

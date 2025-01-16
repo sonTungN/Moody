@@ -6,6 +6,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import vn.edu.rmit.data.model.Video
@@ -40,6 +41,25 @@ class VideoPagerViewModel @Inject constructor(
                     state.copy(moods = moods)
                 }
             }
+        }
+    }
+
+    fun loadVideosForMoodsString(selectedMoods: List<String>) {
+        viewModelScope.launch {
+            videoService
+                .getVideos().map { videos ->
+                    videos.filter { video ->
+                        video.moodTags.any { mood ->
+                            selectedMoods.contains(mood.id)
+                        }
+                    }
+
+                }
+                .collect { videos ->
+                    _uiState.update { state ->
+                        state.copy(videos = videos)
+                    }
+                }
         }
     }
 

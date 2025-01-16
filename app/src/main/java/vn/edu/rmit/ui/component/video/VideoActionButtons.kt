@@ -36,7 +36,7 @@ fun VideoActionButtons(
     ) {
 
         FilledTonalButton(
-            onClick = onViewDetailClick,
+            onClick = onBookClick,
             modifier = Modifier.weight(1f),
         ) {
             Icon(
@@ -49,7 +49,7 @@ fun VideoActionButtons(
         }
 
         Button(
-            onClick = onBookClick,
+            onClick = onViewDetailClick,
             modifier = Modifier.weight(1f),
         ) {
             Icon(

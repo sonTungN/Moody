@@ -117,7 +117,7 @@ fun VideoDetail(
                 onClick = { handleAction(VideoDetailAction.ToggleVideo) }
             )
     ) {
-        val (videoPlayer, sideBar, videoInfo, videoActionBtn, homeCta) = createRefs()
+        val (videoPlayer, sideBar, videoInfo, videoActionBtn) = createRefs()
 
         VideoPlayer(
             player = player,
@@ -137,9 +137,7 @@ fun VideoDetail(
             likes = uiState.reactCount,
             isLiked = uiState.reactStatus,
             isSaved = uiState.saveStatus,
-            comments = 0,
             onLikeClick = { videoViewModel.toggleReaction(videoId = video.id) },
-            onCommentClick = { },
             onSaveClick = { videoViewModel.toggleSave(videoId = video.id) },
             filterCount = filterCount,
             onFilterClick = onFilterClick,

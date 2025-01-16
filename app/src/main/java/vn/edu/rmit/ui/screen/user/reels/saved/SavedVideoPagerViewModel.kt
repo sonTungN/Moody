@@ -21,6 +21,10 @@ class SavedVideoPagerViewModel @Inject constructor(
 
     private val exoPlayerCache = mutableMapOf<String, ExoPlayer>()
 
+    init {
+        loadSavedVideo()
+    }
+
     fun loadSavedVideo() {
         viewModelScope.launch {
             videoService

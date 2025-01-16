@@ -10,6 +10,8 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Mood
+import androidx.compose.material.icons.filled.Filter
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
@@ -29,11 +31,9 @@ fun VideoActionBar(
     likes: Int,
     isLiked: Boolean,
     isSaved: Boolean,
-    comments: Int,
     filterCount: Number,
     onFilterClick: () -> Unit,
     onLikeClick: () -> Unit,
-    onCommentClick: () -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -42,6 +42,7 @@ fun VideoActionBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             IconButton(
                 onClick = { onFilterClick() },
@@ -80,27 +81,6 @@ fun VideoActionBar(
             )
         }
 
-        /*
-        IconButton(
-            modifier = Modifier.size(60.dp),
-            onClick = onCommentClick
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(
-                    Icons.Filled.ChatBubble,
-                    "comments",
-                    modifier = Modifier.size(35.dp),
-                    tint = Color.White
-                )
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = comments.toString(),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
-                )
-            }
-        }
-         */
-
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             IconToggleButton(
                 checked = isSaved,
@@ -130,10 +110,8 @@ fun VideoActionBarPreview() {
         likes = 100,
         isLiked = false,
         isSaved = false,
-        comments = 50,
         filterCount = 5,
         onLikeClick = {},
-        onCommentClick = {},
         onFilterClick = {},
         onSaveClick = {}
     )
@@ -146,10 +124,8 @@ fun VideoActionBarToggledPreview() {
         likes = 100,
         isLiked = true,
         isSaved = true,
-        comments = 50,
         filterCount = 10,
         onLikeClick = {},
-        onCommentClick = {},
         onFilterClick = {},
         onSaveClick = {}
     )
