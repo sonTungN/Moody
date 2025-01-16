@@ -107,6 +107,9 @@ fun MoodScapeRoutes(
                 startDestination = OwnerRoute
                 navigateRoute = OwnerRoute
             }
+
+            "manager" -> {
+            }
         }
     }
 

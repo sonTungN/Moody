@@ -9,7 +9,7 @@ import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Filter
+import androidx.compose.material.icons.filled.Mood
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
@@ -30,7 +30,7 @@ fun VideoActionBar(
     isLiked: Boolean,
     isSaved: Boolean,
     comments: Int,
-    filterCount: Int,
+    filterCount: Number,
     onFilterClick: () -> Unit,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
@@ -42,21 +42,20 @@ fun VideoActionBar(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             IconButton(
                 onClick = { onFilterClick() },
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Filter,
+                    imageVector = Icons.Default.Mood,
                     contentDescription = "filter",
                     modifier = Modifier.size(32.dp),
                     tint = Color(0xFFFFFFFF)
                 )
             }
             Text(
-                text = likes.toString(),
+                text = filterCount.toString(),
                 style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
             )
         }

@@ -36,6 +36,8 @@ fun SavedVideoPagerScreen(
                 video = video,
                 onDetailClick = onDetailClick,
                 onBookingClick = onBookingClick,
+                filterCount = 0,
+                onFilterClick = {},
             )
         }
     }
