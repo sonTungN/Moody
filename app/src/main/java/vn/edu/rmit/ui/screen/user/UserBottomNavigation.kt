@@ -14,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import vn.edu.rmit.HomeRoute
+import vn.edu.rmit.PropertyLocationRoute
 import vn.edu.rmit.R
 import vn.edu.rmit.ReservationRoute
 import vn.edu.rmit.SavePropertyRoute
+import vn.edu.rmit.SettingsRoute
 
 @Composable
 fun UserBottomNavigation(
@@ -47,8 +49,8 @@ fun UserBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.search)) },
-            selected = false,
-            onClick = {}
+            selected = currentScreen == PropertyLocationRoute::class.qualifiedName,
+            onClick = { navigate(PropertyLocationRoute) }
 
 //            selected = currentScreen == HistoryRoute::class.qualifiedName,
 //            onClick = { navigate(HistoryRoute) }
@@ -86,8 +88,8 @@ fun UserBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.settings)) },
-            selected = false,
-            onClick = {  }
+            selected = currentScreen == SettingsRoute::class.qualifiedName,
+            onClick = { navigate(SettingsRoute) }
         )
     }
 }

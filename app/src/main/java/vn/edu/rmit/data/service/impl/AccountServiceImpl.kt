@@ -91,8 +91,7 @@ class AccountServiceImpl @Inject constructor(
     }
 
     override suspend fun getProfile(): Profile? = auth.currentUser?.let {
-        profileRef.document(it.uid).get().await().let { documentToProfile(
-            it) }
+        profileRef.document(it.uid).get().await().let { documentToProfile(it) }
     }
 
     override suspend fun getProfileById(id: String): Profile {

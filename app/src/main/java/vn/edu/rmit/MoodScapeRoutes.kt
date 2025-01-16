@@ -17,10 +17,12 @@ import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
+import vn.edu.rmit.ui.screen.user.location.LocationScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
+import vn.edu.rmit.ui.screen.user.settings.SettingScreen
 
 @Serializable
 object AuthenticationRoute
@@ -41,10 +43,16 @@ object TravelerRoute
 object HomeRoute
 
 @Serializable
+object PropertyLocationRoute
+
+@Serializable
 object OwnerRoute
 
 @Serializable
 object MoodFilterRoute
+
+@Serializable
+object SettingsRoute
 
 @Serializable
 object ReservationRoute
@@ -108,7 +116,6 @@ fun MoodScapeRoutes(
         modifier = modifier,
     ) {
         navigation<AuthenticationRoute>(startDestination = LoginRoute) {
-
             composable<RegisterRoute> {
                 RegisterScreen(
                     onRegisterComplete = {
@@ -149,12 +156,6 @@ fun MoodScapeRoutes(
         navigation<OwnerRoute>(startDestination = OwnerHomeRoute) {
             composable<OwnerHomeRoute> {
                 HomeScreen(
-                    onLogout = {
-                        navController.navigate(AuthenticationRoute) {
-                            popUpTo(LandingRoute) { inclusive = true }
-                        }
-                        onLogoutSuccess()
-                    },
                     onReservationClick = { },
                     onDonationClick = { }
                 )
@@ -195,14 +196,15 @@ fun MoodScapeRoutes(
                 HomeScreen(
                     onReservationClick = {},
                     onDonationClick = { id -> },
-                    onLogout = {
-                        navController.navigate(AuthenticationRoute) {
-                            popUpTo(LandingRoute) {
-                                inclusive = true
-                            }
-                        }
-                        onLogoutSuccess()
-                    })
+                )
+            }
+
+            composable<PropertyLocationRoute> {
+                LocationScreen(
+                    onPropertyClick = { property ->
+                        navController.navigate(PropertyRoute(id = property.id))
+                    }
+                )
             }
 
             composable<ReservationRoute> {
@@ -217,7 +219,6 @@ fun MoodScapeRoutes(
 
             composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
-
                 BookingScreen(
                     route.id,
                     onReservedClick = { navController.navigate(PaymentRoute)}
@@ -241,6 +242,19 @@ fun MoodScapeRoutes(
                     }
                 }
             })
+        }
+
+        composable<SettingsRoute> {
+            SettingScreen(
+                onLogoutSuccess = {
+                    navController.navigate(AuthenticationRoute) {
+                        popUpTo(LandingRoute) {
+                            inclusive = true
+                        }
+                    }
+                    onLogoutSuccess()
+                }
+            )
         }
     }
 }

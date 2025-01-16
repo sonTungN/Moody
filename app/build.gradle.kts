@@ -5,6 +5,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     kotlin("plugin.serialization") version "2.1.0"
 }
 
@@ -40,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -95,7 +97,7 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     // Realtime Database
-    implementation("com.google.firebase:firebase-database")
+    implementation(libs.firebase.database)
 
     // Media3 ExoPLayer
     implementation(libs.androidx.media3.exoplayer)
@@ -109,13 +111,34 @@ dependencies {
     // Map Utils and Service
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
-
     implementation(libs.android.maps.utils)
     implementation(libs.places)
-
     implementation(libs.google.maps.services)
+    // Google Map Compose for Android
+    implementation(libs.maps.compose)
+
+    // Google Permissions
+    implementation (libs.accompanist.permissions)
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+
+secrets {
+    // To add your Maps API key to this project:
+    // 1. If the secrets.properties file does not exist, create it in the same folder as the local.properties file.
+    // 2. Add this line, where YOUR_API_KEY is your API key:
+    //        MAPS_API_KEY=YOUR_API_KEY
+    propertiesFileName = "secrets.properties"
+
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
