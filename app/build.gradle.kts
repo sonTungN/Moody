@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material.core)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -95,7 +96,7 @@ dependencies {
     implementation(libs.firebase.firestore)
 
     // Realtime Database
-    implementation("com.google.firebase:firebase-database")
+    implementation(libs.firebase.database)
 
     // Media3 ExoPLayer
     implementation(libs.androidx.media3.exoplayer)
