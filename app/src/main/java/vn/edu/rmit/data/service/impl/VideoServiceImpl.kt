@@ -7,6 +7,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -26,21 +27,27 @@ import javax.inject.Inject
 class VideoServiceImpl @Inject constructor(
     private val db: FirebaseFirestore,
     private val database: FirebaseDatabase,
-    val accountService: AccountService,
+    private val accountService: AccountService,
+    private val moodService: MoodService,
 ) : VideoService {
-
     private val videoRef = db.collection("videos")
 
     override suspend fun documentToVideo(document: DocumentSnapshot): Video {
+        val moodTags = document.get("mood_tags")?.let {
+            (it as List<*>).filterIsInstance<DocumentReference>()
+        } ?: emptyList()
+
         return Video(
             id = document.id,
             title = document.getString("title") ?: "",
             desc = document.getString("desc") ?: "",
             url = document.getString("url") ?: "",
             propertyId = document.getString("propertyId") ?: "",
-            moodTags = (document.get("mood_tags") as? List<*>)?.mapNotNull {
-                it?.toString()
-            } ?: emptyList()
+            moodTags = moodTags.map { tag ->
+                tag.snapshots().map {
+                    moodService.documentToMood(it)
+                }.first()
+            }.toList()
         )
     }
 
@@ -59,8 +66,12 @@ class VideoServiceImpl @Inject constructor(
             }
     }
 
-    override fun getVideos(): Flow<List<Video>> {
-        return videoRef.snapshots().map { snapshot ->
+    override fun getVideos(moods: List<String>): Flow<List<Video>> {
+        var query: Query = videoRef
+
+        if (moods.isNotEmpty()) query = query.whereArrayContainsAny("mood_tags", moods.map { db.collection("moods").document(it) })
+
+        return query.snapshots().map { snapshot ->
             snapshot.documents.map { documentToVideo(it) }
         }
     }

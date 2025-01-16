@@ -8,5 +8,5 @@ data class Video(
     val desc: String = "",
     val url: String = "",
     val propertyId: String = "",
-    val moodTags: List<String> = emptyList()
+    val moodTags: List<Mood> = emptyList()
 )

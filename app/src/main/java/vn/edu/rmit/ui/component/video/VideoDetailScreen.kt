@@ -130,6 +130,9 @@ fun VideoDetail(
             onLikeClick = { videoViewModel.toggleReaction(videoId = video.id) },
             onCommentClick = { },
             onSaveClick = { videoViewModel.toggleSave(videoId = video.id) },
+            filterCount = 0
+            ,
+            onFilterClick = {},
             modifier = Modifier.constrainAs(sideBar) {
                 end.linkTo(parent.end, margin = 8.dp)
                 bottom.linkTo(videoActionBtn.top, margin = 8.dp)
@@ -140,7 +143,7 @@ fun VideoDetail(
             author = "Son Tung",
             videoTitle = video.title,
             description = video.desc,
-            moodTags = video.moodTags.map { it },
+            moodTags = video.moodTags.map { it.name },
             modifier = Modifier.constrainAs(videoInfo) {
                 start.linkTo(parent.start, margin = 16.dp)
                 bottom.linkTo(videoActionBtn.top, margin = 16.dp)

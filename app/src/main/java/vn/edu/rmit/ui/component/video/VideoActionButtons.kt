@@ -1,11 +1,19 @@
 package vn.edu.rmit.ui.component.video
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,25 +35,36 @@ fun VideoActionButtons(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        ActionButton(
+        FilledTonalButton(
             onClick = onBookClick,
-            icon = Icons.Filled.CalendarToday,
-            text = stringResource(R.string.book),
-            contentDescription = "book",
-            modifier = Modifier.weight(1f)
-        )
+            modifier = Modifier.weight(1f),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = stringResource(R.string.view_details),
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = stringResource(R.string.view_details))
+        }
 
-        ActionButton(
+        Button(
             onClick = onViewDetailClick,
-            icon = Icons.Filled.Info,
-            text = stringResource(R.string.view_details),
-            contentDescription = "details",
-            modifier = Modifier.weight(1f)
-        )
+            modifier = Modifier.weight(1f),
+        ) {
+            Icon(
+                imageVector = Icons.Default.CalendarToday,
+                contentDescription = stringResource(R.string.book),
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = stringResource(R.string.book))
+        }
+
     }
 }
 
-@Preview(showBackground = false,)
+@Preview(showBackground = true)
 @Composable
 fun VideoActionButtonsPreview() {
     VideoActionButtons(
