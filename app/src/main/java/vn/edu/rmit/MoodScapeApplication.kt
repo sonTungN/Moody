@@ -12,6 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import vn.edu.rmit.ui.screen.manager.ManagerBottomNavigation
 import vn.edu.rmit.ui.screen.owner.OwnerBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserBottomNavigation
 import vn.edu.rmit.ui.screen.user.UserTopBar
@@ -32,7 +33,9 @@ fun MoodScapeApplication(
 
     val isVisibleBar = !(
             currentScreen?.startsWith(MoodFilterRoute::class.qualifiedName ?: "") == true ||
-                    currentScreen?.startsWith(SlideVideoPagerRoute::class.qualifiedName ?: "") == true
+                    currentScreen?.startsWith(
+                        SlideVideoPagerRoute::class.qualifiedName ?: ""
+                    ) == true
             )
 
     Scaffold(modifier = Modifier.fillMaxSize(),
@@ -53,8 +56,16 @@ fun MoodScapeApplication(
                             navController.navigate(screen)
                         }
                     )
-                if (uiState.profile.role.id == "owner")
+                else if (uiState.profile.role.id == "owner")
                     OwnerBottomNavigation(
+                        currentScreen = currentScreen,
+                        navigate = { screen ->
+                            navController.popBackStack(screen, inclusive = true)
+                            navController.navigate(screen)
+                        }
+                    )
+                else if (uiState.profile.role.id == "manager")
+                    ManagerBottomNavigation(
                         currentScreen = currentScreen,
                         navigate = { screen ->
                             navController.popBackStack(screen, inclusive = true)
