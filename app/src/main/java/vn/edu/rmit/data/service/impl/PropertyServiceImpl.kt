@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -18,6 +19,7 @@ import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.PropertyTypeService
 import vn.edu.rmit.data.service.VideoService
 import java.time.LocalTime
+import java.util.UUID
 import javax.inject.Inject
 
 class PropertyServiceImpl @Inject constructor(
@@ -101,22 +103,59 @@ class PropertyServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateProperty(property: Property) {
+    override suspend fun updateProperty(property: Property): Property {
         db.collection("properties").document(property.id).set(
             hashMapOf(
                 "name" to property.name,
                 "address" to property.address,
                 "geoPoint" to property.geoPoint?.let {
-                    mapOf("latitude" to it.latitude, "longitude" to it.longitude)
+                    GeoPoint(it.latitude, it.longitude)
                 },
                 "image" to property.image,
-                "videos" to property.videos.map { video -> db.collection("videos").document(video.id) },
-                "mood_tags" to property.moodTags.map { mood -> db.collection("moods").document(mood.id) },
+                "videos" to property.videos.map { video ->
+                    db.collection("videos").document(video.id)
+                },
+                "mood_tags" to property.moodTags.map { mood ->
+                    db.collection("moods").document(mood.id)
+                },
                 "opening_hours" to property.openingHours.toString(),
                 "closing_hours" to property.closingHours.toString(),
-                "travelers" to property.travelers.map { traveler -> db.collection("profiles").document(traveler.id) },
-                "owner" to property.owner
+                "travelers" to property.travelers.map { traveler ->
+                    db.collection("profiles").document(traveler.id)
+                },
+                "owner" to property.owner.let { db.collection("profiles").document(it.id) }
             )
         ).await()
+
+        return getProperty(property.id)
+    }
+
+    override suspend fun addProperty(property: Property): Property {
+        val id = UUID.randomUUID()
+
+        db.collection("properties").document(id.toString()).set(
+            hashMapOf(
+                "name" to property.name,
+                "address" to property.address,
+                "geoPoint" to property.geoPoint?.let {
+                    GeoPoint(it.latitude, it.longitude)
+                },
+                "image" to property.image,
+                "videos" to property.videos.map { video ->
+                    db.collection("videos").document(video.id)
+                },
+                "mood_tags" to property.moodTags.map { mood ->
+                    db.collection("moods").document(mood.id)
+                },
+                "opening_hours" to property.openingHours.toString(),
+                "closing_hours" to property.closingHours.toString(),
+                "travelers" to property.travelers.map { traveler ->
+                    db.collection("profiles").document(traveler.id)
+                },
+                "owner" to property.owner.let { db.collection("profiles").document(it.id) }
+            )
+        ).await()
+
+        return getProperty(id.toString())
     }
 }
