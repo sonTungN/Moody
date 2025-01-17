@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.manager.bookings.ManagerBookingsScreen
 import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
 import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
 import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
@@ -26,6 +27,7 @@ import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 import vn.edu.rmit.ui.screen.user.settings.SettingScreen
+import java.io.Serial
 
 @Serializable
 object AuthenticationRoute
@@ -93,13 +95,19 @@ object ManagerPropertiesRoute
 @Serializable
 data class ManagerPropertyRoute(val id: String)
 
+@Serializable
+object ManagerBookingsRoute
+
+@Serializable
+data class ManagerBookingRoute(val id: String)
+
 @Composable
 fun MoodScapeRoutes(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     authenticated: Boolean = false,
     role: String,
     onLogoutSuccess: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     var startDestination: Any = LandingRoute
     var navigateRoute: Any = LandingRoute
@@ -264,6 +272,16 @@ fun MoodScapeRoutes(
             composable<ManagerPropertyRoute> { backStackEntry ->
                 val route: ManagerPropertyRoute = backStackEntry.toRoute()
                 ManagerPropertyScreen(route.id)
+            }
+
+            composable<ManagerBookingsRoute> {
+                ManagerBookingsScreen {
+                    navController.navigate(ManagerBookingRoute(it))
+                }
+            }
+
+            composable<ManagerBookingRoute> { backStackEntry ->
+                val route: ManagerBookingRoute = backStackEntry.toRoute()
             }
         }
 

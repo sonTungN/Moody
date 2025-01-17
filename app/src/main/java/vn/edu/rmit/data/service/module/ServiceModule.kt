@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import vn.edu.rmit.data.service.AccountService
+import vn.edu.rmit.data.service.BookingService
 import vn.edu.rmit.data.service.MoodService
 import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.PropertyTypeService
@@ -12,6 +13,7 @@ import vn.edu.rmit.data.service.RoleService
 import vn.edu.rmit.data.service.VideoActionService
 import vn.edu.rmit.data.service.VideoService
 import vn.edu.rmit.data.service.impl.AccountServiceImpl
+import vn.edu.rmit.data.service.impl.BookingServiceImpl
 import vn.edu.rmit.data.service.impl.MoodServiceImpl
 import vn.edu.rmit.data.service.impl.PropertyServiceImpl
 import vn.edu.rmit.data.service.impl.PropertyTypeServiceImpl
@@ -42,4 +44,7 @@ abstract class ServiceModule {
 
     @Binds
     abstract fun provideVideoActionService(impl: VideoActionServiceImpl): VideoActionService
+
+    @Binds
+    abstract fun provideBookingService(impl: BookingServiceImpl): BookingService
 }

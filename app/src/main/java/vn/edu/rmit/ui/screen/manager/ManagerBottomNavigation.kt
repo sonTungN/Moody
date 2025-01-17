@@ -1,6 +1,7 @@
 package vn.edu.rmit.ui.screen.manager
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material.icons.filled.Hotel
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -10,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import vn.edu.rmit.ManagerBookingRoute
+import vn.edu.rmit.ManagerBookingsRoute
 import vn.edu.rmit.ManagerPropertiesRoute
 import vn.edu.rmit.R
 import vn.edu.rmit.SettingsRoute
@@ -34,6 +37,19 @@ fun ManagerBottomNavigation(
             selected = currentScreen == ManagerPropertiesRoute::class.qualifiedName,
             onClick = { navigate(ManagerPropertiesRoute) }
         )
+
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    Icons.Filled.Checklist,
+                    contentDescription = stringResource(R.string.booking)
+                )
+            },
+            label = { Text(stringResource(R.string.booking)) },
+            selected = currentScreen == ManagerBookingsRoute::class.qualifiedName,
+            onClick = { navigate(ManagerBookingsRoute) }
+        )
+
 
         NavigationBarItem(
             icon = {
