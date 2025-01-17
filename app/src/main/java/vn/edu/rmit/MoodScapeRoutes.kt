@@ -9,14 +9,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
 import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
 import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
-import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
-import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
+import vn.edu.rmit.ui.screen.owner.property.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.owner.reservation.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen

@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.owner
+package vn.edu.rmit.ui.screen.owner.property
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import vn.edu.rmit.ui.component.property.PropertyDetails
-import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreenViewModel
 
 @Composable
 fun OwnerPropertyScreen(
@@ -25,9 +24,7 @@ fun OwnerPropertyScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(uiState.properties) { property ->
-            PropertyDetails(
-                property
-            )
+            PropertyDetails(property)
         }
     }
 }
