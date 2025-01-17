@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.manager.booking.ManagerBookingScreen
 import vn.edu.rmit.ui.screen.manager.bookings.ManagerBookingsScreen
 import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
 import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
@@ -300,6 +301,8 @@ fun MoodScapeRoutes(
 
             composable<ManagerBookingRoute> { backStackEntry ->
                 val route: ManagerBookingRoute = backStackEntry.toRoute()
+
+                ManagerBookingScreen(id = route.id)
             }
         }
 
