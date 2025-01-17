@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,7 +37,7 @@ fun RoomPickerModal(
     onDismiss: () -> Unit,
     onConfirm: (Int) -> Unit
 ) {
-    var rooms by remember { mutableStateOf(initialRooms) }
+    var rooms by remember { mutableIntStateOf(initialRooms) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -78,8 +79,7 @@ fun RoomAmountPicker(
                 width = 1.dp,
                 color = Color.LightGray,
                 shape = RoundedCornerShape(8.dp)
-            )
-            .background(Color.White, RoundedCornerShape(8.dp)),
+            ).background(MaterialTheme.colorScheme.surfaceContainer),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -95,14 +95,12 @@ fun RoomAmountPicker(
             Icon(
                 imageVector = Icons.Default.Remove,
                 contentDescription = "Decrease",
-                tint = Color.Blue
             )
         }
 
         Text(
             text = "$value",
             style = MaterialTheme.typography.bodyLarge.copy(fontSize = 18.sp),
-            color = Color.Black,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
@@ -118,7 +116,6 @@ fun RoomAmountPicker(
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Increase",
-                tint = Color.Blue
             )
         }
     }

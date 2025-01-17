@@ -22,13 +22,11 @@ import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.location.LocationScreen
-import vn.edu.rmit.ui.screen.user.payment.PaymentScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 import vn.edu.rmit.ui.screen.user.settings.SettingScreen
-import java.io.Serial
 
 @Serializable
 object AuthenticationRoute
@@ -66,8 +64,6 @@ object ReservationRoute
 @Serializable
 object SavePropertyRoute
 
-@Serializable
-object PaymentRoute
 
 @Serializable
 data class SlideVideoPagerRoute(val selectedMoods: List<String>)
@@ -212,7 +208,7 @@ fun MoodScapeRoutes(
             composable<MoodFilterRoute> {
                 MoodScreen(
                     onSkip = {
-                        navController.navigate(HomeRoute)
+                        navController.navigate(ReservationRoute)
                     },
                     onSelected = { selectedMoodIds ->
                         navController.navigate(SlideVideoPagerRoute(selectedMoodIds))
@@ -261,16 +257,16 @@ fun MoodScapeRoutes(
                 val route: BookingRoute = backStackEntry.toRoute()
                 BookingScreen(
                     route.id,
-                    onReservedClick = { navController.navigate(PaymentRoute) }
+                    paymentComplete = {
+                        navController.navigate(ReservationRoute)
+                    }
                 )
             }
 
             composable<SavePropertyRoute> {
-                SavedPropertyScreen()
-            }
-
-            composable<PaymentRoute> {
-                PaymentScreen()
+                SavedPropertyScreen(onPropertyClick = {
+                    navController.navigate(PropertyRoute(it))
+                })
             }
         }
 

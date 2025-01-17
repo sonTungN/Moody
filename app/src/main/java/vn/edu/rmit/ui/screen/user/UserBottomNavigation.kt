@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import vn.edu.rmit.HomeRoute
+import vn.edu.rmit.MoodFilterRoute
 import vn.edu.rmit.PropertyLocationRoute
 import vn.edu.rmit.R
 import vn.edu.rmit.ReservationRoute
@@ -37,8 +37,8 @@ fun UserBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.home)) },
-            selected = currentScreen == HomeRoute::class.qualifiedName,
-            onClick = { navigate(HomeRoute) }
+            selected = currentScreen == MoodFilterRoute::class.qualifiedName,
+            onClick = { navigate(MoodFilterRoute) }
         )
 
         NavigationBarItem(

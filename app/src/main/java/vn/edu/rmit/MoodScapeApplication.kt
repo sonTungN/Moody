@@ -47,7 +47,7 @@ fun MoodScapeApplication(
                 )
         },
         bottomBar = {
-            if (viewModel.authenticated() && isVisibleBar) {
+            if (viewModel.authenticated()) {
                 if (uiState.profile.role.id == "traveler")
                     UserBottomNavigation(
                         currentScreen = currentScreen,
