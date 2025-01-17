@@ -45,4 +45,16 @@
     <string name="property_type">Property Type</string>
     <string name="about_us">MoodScape helps you discover the most suitable and compatible properties that align with your feelings and emotions. By providing a unique and intuitive platform, we aim to make your search experience more meaningful and personalized.</string>
     <string name="contact_us">Contact Us</string>
+    <string name="add_property">Add your property</string>
+    <string name="no_property_title">No owned property</string>
+    <string name="no_property_description">You haven\'t owned any property yet.</string>
+    <string name="no_booking">No booking request</string>
+    <string name="no_booking_description">No booking to your property recently.</string>
+    <string name="address">Address</string>
+    <string name="submit">Submit</string>
+    <string name="property_name">Property Name</string>
+    <string name="create">Create</string>
+    <string name="property_mood">Property Moods</string>
+    <string name="view_property">View your properties</string>
+    <string name="property">Property</string>
 </resources>

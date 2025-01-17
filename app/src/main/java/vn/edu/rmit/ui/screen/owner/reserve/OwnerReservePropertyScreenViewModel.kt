@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.owner.reservation
+package vn.edu.rmit.ui.screen.owner.reserve
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
