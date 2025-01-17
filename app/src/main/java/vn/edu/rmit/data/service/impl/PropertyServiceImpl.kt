@@ -67,6 +67,7 @@ class PropertyServiceImpl @Inject constructor(
                     it.longitude
                 )
             },
+            price = document.getLong("price") ?: 0,
             image = document.getString("image") ?: "",
             videos = videos.map { videoDocumentRef ->
                 videoDocumentRef.snapshots().map {
@@ -112,6 +113,7 @@ class PropertyServiceImpl @Inject constructor(
                 "geoPoint" to property.geoPoint?.let {
                     GeoPoint(it.latitude, it.longitude)
                 },
+                "price" to property.price,
                 "image" to property.image,
                 "videos" to property.videos.map { video ->
                     db.collection("videos").document(video.id)
@@ -142,6 +144,7 @@ class PropertyServiceImpl @Inject constructor(
                 "geoPoint" to property.geoPoint?.let {
                     GeoPoint(it.latitude, it.longitude)
                 },
+                "price" to property.price,
                 "image" to property.image,
                 "videos" to property.videos.map { video ->
                     db.collection("videos").document(video.id)
