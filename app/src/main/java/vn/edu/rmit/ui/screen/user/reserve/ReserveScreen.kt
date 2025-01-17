@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.stripe.android.paymentsheet.PaymentSheet
+import com.stripe.android.paymentsheet.PaymentSheetResult
 import vn.edu.rmit.ui.component.property.PropertyReservation
 
 @Composable
@@ -20,15 +22,6 @@ fun ReserveScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-//    val properties = uiState.properties.map { property ->
-//        Property(
-//            id = property.id,
-//            name = property.name,
-//            image = property.image,
-//            address = property.address
-//        )
-//    }
-
     LazyColumn(
         modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -38,6 +31,45 @@ fun ReserveScreen(
                 property,
                 onShowDetails = {}
             )
+        }
+    }
+}
+
+private fun presentPaymentSheet(
+    paymentSheet: PaymentSheet,
+    paymentIntentClientSecret: String
+) {
+    val googlePayConfiguration = PaymentSheet.GooglePayConfiguration(
+        environment = PaymentSheet.GooglePayConfiguration.Environment.Test,
+        countryCode = "VN",
+        currencyCode = "VND"
+    )
+
+    paymentSheet.presentWithPaymentIntent(
+        paymentIntentClientSecret,
+        PaymentSheet.Configuration(
+            merchantDisplayName = "My merchant name",
+            // Set `allowsDelayedPaymentMethods` to true if your business handles
+            // delayed notification payment methods like US bank accounts.
+            allowsDelayedPaymentMethods = true,
+            googlePay = googlePayConfiguration
+        )
+    )
+}
+
+private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
+    when (paymentSheetResult) {
+        is PaymentSheetResult.Canceled -> {
+            print("Canceled")
+        }
+
+        is PaymentSheetResult.Failed -> {
+            print("Error: ${paymentSheetResult.error}")
+        }
+
+        is PaymentSheetResult.Completed -> {
+            // Display for example, an order confirmation screen
+            print("Completed")
         }
     }
 }

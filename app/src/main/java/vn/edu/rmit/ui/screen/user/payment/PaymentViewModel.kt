@@ -27,15 +27,11 @@ constructor(
     private val _uiState = MutableStateFlow(PaymentState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getPaymentIntent()
-    }
-
-    fun getPaymentIntent() {
+    fun getPaymentIntent(price: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    stripeService.generatePaymentIntent(1000000L).let { intent ->
+                    stripeService.generatePaymentIntent(price).let { intent ->
                         _uiState.update { state ->
                             state.copy(paymentIntent = intent)
                         }
