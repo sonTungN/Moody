@@ -25,7 +25,7 @@ import vn.edu.rmit.ui.component.property.PropertyDetails
 @Composable
 fun PropertyScreen(
     id: String,
-    onPropertyClick: (id: String) -> Unit,
+    onBookingClick: (id: String) -> Unit,
     viewModel: PropertyScreenViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -36,7 +36,7 @@ fun PropertyScreen(
         PropertyDetails(uiState.property, modifier = Modifier.padding(16.dp))
 
         Button(
-            onClick = { onPropertyClick(id) },
+            onClick = { onBookingClick(id) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(

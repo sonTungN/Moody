@@ -180,7 +180,7 @@ fun MoodScapeRoutes(
             composable<OwnerAddPropertyRoute> {
                 OwnerAddPropertyScreen(
                     onCreate = {
-                        navController.navigate(OwnerAddPropertyRoute) {
+                        navController.navigate(OwnerPropertyRoute) {
                             popUpTo(OwnerAddPropertyRoute) { inclusive = true }
                         }
                     },
@@ -250,7 +250,9 @@ fun MoodScapeRoutes(
             composable<PropertyRoute> { backStackEntry ->
                 val route: PropertyRoute = backStackEntry.toRoute()
 
-                PropertyScreen(route.id)
+                PropertyScreen(route.id, onBookingClick = {
+                    navController.navigate(BookingRoute(it))
+                })
             }
 
             composable<BookingRoute> { backStackEntry ->
