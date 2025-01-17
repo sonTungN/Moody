@@ -13,17 +13,22 @@ import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.manager.bookings.ManagerBookingsScreen
+import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
+import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
 import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
 import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.location.LocationScreen
+import vn.edu.rmit.ui.screen.user.payment.PaymentScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 import vn.edu.rmit.ui.screen.user.settings.SettingScreen
+import java.io.Serial
 
 @Serializable
 object AuthenticationRoute
@@ -82,13 +87,28 @@ object OwnerPropertyRoute
 @Serializable
 object OwnerReservePropertyRoute
 
+@Serializable
+object ManagerRoute
+
+@Serializable
+object ManagerPropertiesRoute
+
+@Serializable
+data class ManagerPropertyRoute(val id: String)
+
+@Serializable
+object ManagerBookingsRoute
+
+@Serializable
+data class ManagerBookingRoute(val id: String)
+
 @Composable
 fun MoodScapeRoutes(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     authenticated: Boolean = false,
     role: String,
     onLogoutSuccess: () -> Unit = {},
-    modifier: Modifier = Modifier
 ) {
     var startDestination: Any = LandingRoute
     var navigateRoute: Any = LandingRoute
@@ -104,12 +124,15 @@ fun MoodScapeRoutes(
                 startDestination = TravelerRoute
                 navigateRoute = TravelerRoute
             }
+
             "owner" -> {
                 startDestination = OwnerRoute
                 navigateRoute = OwnerRoute
             }
 
             "manager" -> {
+                startDestination = ManagerRoute
+                navigateRoute = ManagerRoute
             }
         }
     }
@@ -227,7 +250,7 @@ fun MoodScapeRoutes(
                 val route: BookingRoute = backStackEntry.toRoute()
                 BookingScreen(
                     route.id,
-                    onReservedClick = { navController.navigate(PaymentRoute)}
+                    onReservedClick = { navController.navigate(PaymentRoute) }
                 )
             }
 
@@ -236,7 +259,32 @@ fun MoodScapeRoutes(
             }
 
             composable<PaymentRoute> {
+                PaymentScreen()
+            }
+        }
 
+        navigation<ManagerRoute>(startDestination = ManagerPropertiesRoute) {
+            composable<ManagerPropertiesRoute> {
+                ManagerPropertiesScreen(
+                    onPropertyClick = {
+                        navController.navigate(ManagerPropertyRoute(it))
+                    }
+                )
+            }
+
+            composable<ManagerPropertyRoute> { backStackEntry ->
+                val route: ManagerPropertyRoute = backStackEntry.toRoute()
+                ManagerPropertyScreen(route.id)
+            }
+
+            composable<ManagerBookingsRoute> {
+                ManagerBookingsScreen {
+                    navController.navigate(ManagerBookingRoute(it))
+                }
+            }
+
+            composable<ManagerBookingRoute> { backStackEntry ->
+                val route: ManagerBookingRoute = backStackEntry.toRoute()
             }
         }
 

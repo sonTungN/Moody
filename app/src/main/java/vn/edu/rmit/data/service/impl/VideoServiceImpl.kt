@@ -16,12 +16,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.model.Video
 import vn.edu.rmit.data.service.AccountService
 import vn.edu.rmit.data.service.MoodService
-import vn.edu.rmit.data.service.PropertyService
 import vn.edu.rmit.data.service.VideoService
+import java.util.UUID
 import javax.inject.Inject
 
 class VideoServiceImpl @Inject constructor(
@@ -69,11 +68,28 @@ class VideoServiceImpl @Inject constructor(
     override fun getVideos(moods: List<String>): Flow<List<Video>> {
         var query: Query = videoRef
 
-        if (moods.isNotEmpty()) query = query.whereArrayContainsAny("mood_tags", moods.map { db.collection("moods").document(it) })
+        if (moods.isNotEmpty()) query = query.whereArrayContainsAny(
+            "mood_tags",
+            moods.map { db.collection("moods").document(it) })
 
         return query.snapshots().map { snapshot ->
             snapshot.documents.map { documentToVideo(it) }
         }
+    }
+
+    override suspend fun addVideo(video: Video): Video {
+        val id = UUID.randomUUID()
+        videoRef.document(id.toString()).set(video.let {
+            hashMapOf(
+                "desc" to it.desc,
+                "mood_tags" to it.moodTags.map { db.collection("moods").document(it.id) },
+                "propertyId" to it.propertyId,
+                "title" to it.title,
+                "url" to it.url
+            )
+        }).await()
+
+        return documentToVideo(videoRef.document(id.toString()).get().await())
     }
 
     override fun getCurrentUserSavedVideos(): Flow<List<Video>> = callbackFlow {

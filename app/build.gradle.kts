@@ -99,6 +99,18 @@ dependencies {
     // Realtime Database
     implementation(libs.firebase.database)
 
+    // Supabase
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.postgrest.kt)
+    implementation(libs.storage.kt)
+    implementation(libs.ktor.client.android)
+
+    // Stripe
+    // TODO: mock Server SDK
+    implementation(libs.stripe.java)
+    // Client SDK
+    implementation(libs.stripe.android)
+
     // Media3 ExoPLayer
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
@@ -118,7 +130,7 @@ dependencies {
     implementation(libs.maps.compose)
 
     // Google Permissions
-    implementation (libs.accompanist.permissions)
+    implementation(libs.accompanist.permissions)
 }
 
 kapt {
