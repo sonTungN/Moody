@@ -3,6 +3,7 @@ package vn.edu.rmit.data.service.impl
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.snapshots
@@ -137,6 +138,7 @@ class PropertyServiceImpl @Inject constructor(
             hashMapOf(
                 "name" to property.name,
                 "address" to property.address,
+                "type" to property.type.let { db.collection("property_type").document(it.id) },
                 "geoPoint" to property.geoPoint?.let {
                     GeoPoint(it.latitude, it.longitude)
                 },
@@ -154,6 +156,11 @@ class PropertyServiceImpl @Inject constructor(
                 },
                 "owner" to property.owner.let { db.collection("profiles").document(it.id) }
             )
+        ).await()
+
+        db.collection("profiles").document(property.owner.id)
+            .update(
+            "ownedProperties", FieldValue.arrayUnion(id.toString())
         ).await()
 
         return getProperty(id.toString())

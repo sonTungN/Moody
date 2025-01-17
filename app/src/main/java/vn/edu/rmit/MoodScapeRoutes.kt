@@ -9,15 +9,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import vn.edu.rmit.data.model.type.Mood
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
 import vn.edu.rmit.ui.screen.manager.bookings.ManagerBookingsScreen
 import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
 import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
-import vn.edu.rmit.ui.screen.owner.OwnerPropertyScreen
-import vn.edu.rmit.ui.screen.owner.OwnerReservedPropertyScreen
+import vn.edu.rmit.ui.screen.owner.add.OwnerAddPropertyScreen
+import vn.edu.rmit.ui.screen.owner.property.OwnerPropertyScreen
+import vn.edu.rmit.ui.screen.owner.reserve.OwnerReservedPropertyScreen
 import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
@@ -79,10 +79,10 @@ data class PropertyRoute(val id: String)
 data class BookingRoute(val id: String)
 
 @Serializable
-object OwnerHomeRoute
+object OwnerPropertyRoute
 
 @Serializable
-object OwnerPropertyRoute
+object OwnerAddPropertyRoute
 
 @Serializable
 object OwnerReservePropertyRoute
@@ -180,21 +180,32 @@ fun MoodScapeRoutes(
             }
         }
 
-        navigation<OwnerRoute>(startDestination = OwnerHomeRoute) {
-            composable<OwnerHomeRoute> {
-                HomeScreen(
-                    onReservationClick = { },
-                    onDonationClick = { }
+        navigation<OwnerRoute>(startDestination = OwnerPropertyRoute) {
+            composable<OwnerAddPropertyRoute> {
+                OwnerAddPropertyScreen(
+                    onCreate = {
+                        navController.navigate(OwnerAddPropertyRoute) {
+                            popUpTo(OwnerAddPropertyRoute) { inclusive = true }
+                        }
+                    },
                 )
             }
 
             composable<OwnerPropertyRoute> {
-                OwnerPropertyScreen()
+                OwnerPropertyScreen(
+                    onAddNewPropertyClick = {
+                        navController.navigate(OwnerAddPropertyRoute)
+                    },
+                    onPropertyClick = {
+                        navController.navigate(ManagerPropertyRoute(it))
+                    }
+                )
             }
 
             composable<OwnerReservePropertyRoute> {
                 OwnerReservedPropertyScreen()
             }
+
         }
 
         navigation<TravelerRoute>(startDestination = MoodFilterRoute) {

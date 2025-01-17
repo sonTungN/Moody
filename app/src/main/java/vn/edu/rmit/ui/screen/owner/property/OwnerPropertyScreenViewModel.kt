@@ -1,4 +1,4 @@
-package vn.edu.rmit.ui.screen.owner
+package vn.edu.rmit.ui.screen.owner.property
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.AddLocation
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Hotel
+import androidx.compose.material.icons.filled.MapsHomeWork
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import vn.edu.rmit.HomeRoute
+import vn.edu.rmit.OwnerAddPropertyRoute
 import vn.edu.rmit.OwnerPropertyRoute
 import vn.edu.rmit.OwnerReservePropertyRoute
 import vn.edu.rmit.R
+import vn.edu.rmit.SettingsRoute
 
 @Composable
 fun OwnerBottomNavigation(
@@ -31,13 +34,13 @@ fun OwnerBottomNavigation(
         NavigationBarItem(
             icon = {
                 Icon(
-                    Icons.Filled.Home,
-                    contentDescription = stringResource(R.string.home)
+                    Icons.Filled.MapsHomeWork,
+                    contentDescription = stringResource(R.string.property)
                 )
             },
-            label = { Text(stringResource(R.string.home)) },
-            selected = currentScreen == HomeRoute::class.qualifiedName,
-            onClick = { navigate(HomeRoute) }
+            label = { Text(stringResource(R.string.property)) },
+            selected = currentScreen == OwnerPropertyRoute::class.qualifiedName,
+            onClick = { navigate(OwnerPropertyRoute) }
         )
 
         NavigationBarItem(
@@ -48,23 +51,8 @@ fun OwnerBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.add)) },
-            selected = false,
-            onClick = {}
-
-//            selected = currentScreen == HistoryRoute::class.qualifiedName,
-//            onClick = { navigate(HistoryRoute) }
-        )
-
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    Icons.Filled.Hotel,
-                    contentDescription = stringResource(R.string.properties)
-                )
-            },
-            label = { Text(stringResource(R.string.properties)) },
-            selected = currentScreen == OwnerPropertyRoute::class.qualifiedName,
-            onClick = { navigate(OwnerPropertyRoute) }
+            selected = currentScreen == OwnerAddPropertyRoute::class.qualifiedName,
+            onClick = { navigate(OwnerAddPropertyRoute) }
         )
 
         NavigationBarItem(
@@ -88,8 +76,8 @@ fun OwnerBottomNavigation(
                 )
             },
             label = { Text(stringResource(R.string.settings)) },
-            selected = false,
-            onClick = {}
+            selected = currentScreen == SettingsRoute::class.qualifiedName,
+            onClick = { navigate(SettingsRoute)}
         )
     }
 }
@@ -99,9 +87,7 @@ fun OwnerBottomNavigation(
 fun OwnerBottomNavigationPreview() {
     OwnerBottomNavigation(
         currentScreen = HomeRoute::class.qualifiedName,
-        navigate = { route ->
-
-        }
+        navigate = { route -> }
     )
 
 }

@@ -32,6 +32,7 @@ import vn.edu.rmit.ui.screen.user.filter.Emotion
 
 @Composable
 fun EmotionCard(
+    modifier: Modifier = Modifier,
     emotion: Emotion,
     isSelected: Boolean,
     onSelect: () -> Unit
@@ -40,7 +41,7 @@ fun EmotionCard(
         modifier = Modifier
             .aspectRatio(1f)
             .padding(8.dp)
-            .scale(if (isSelected) 1.1f else 1f)
+            .scale(if (isSelected) 1f else 0.95f)
             .clickable(onClick = onSelect)
     ) {
         Card(
@@ -62,7 +63,7 @@ fun EmotionCard(
                 emotion.icon()
                 Text(
                     text = emotion.name,
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(top = 8.dp)
                 )
@@ -77,13 +78,13 @@ fun EmotionCard(
                     .offset(x = (-6).dp, y = (6).dp),
                 shape = RoundedCornerShape(12.dp),
                 color = Color.White,
-                border = BorderStroke(2.dp, Color.Black),
+                border = BorderStroke(1.5.dp, Color.Black),
             ) {
                 Icon(
                     Icons.Filled.Check,
                     contentDescription = "checked",
                     tint = Color(0xFF07A06E),
-                    modifier = Modifier.padding(2.dp)
+                    modifier = Modifier.padding(1.dp)
                 )
             }
         }
