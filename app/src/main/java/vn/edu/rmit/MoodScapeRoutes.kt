@@ -285,7 +285,13 @@ fun MoodScapeRoutes(
 
             composable<ManagerPropertyRoute> { backStackEntry ->
                 val route: ManagerPropertyRoute = backStackEntry.toRoute()
-                ManagerPropertyScreen(route.id)
+                ManagerPropertyScreen(
+                    id = route.id,
+                    role = role,
+                    onUpdate = {
+                        navController.navigate(ManagerPropertyRoute(route.id))
+                    },
+                )
             }
 
             composable<ManagerBookingsRoute> {

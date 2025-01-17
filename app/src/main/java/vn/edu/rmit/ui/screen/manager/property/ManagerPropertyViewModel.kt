@@ -15,26 +15,64 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.model.Video
+import vn.edu.rmit.data.model.type.Mood
+import vn.edu.rmit.data.model.type.PropertyType
+import vn.edu.rmit.data.service.MoodService
 import vn.edu.rmit.data.service.PropertyService
+import vn.edu.rmit.data.service.PropertyTypeService
 import vn.edu.rmit.data.service.VideoService
-import vn.edu.rmit.ui.screen.user.property.PropertyUiState
 import javax.inject.Inject
+
+data class PropertyScreenState(
+    val propertyId: String? = "",
+    val property: Property = Property(),
+    val propertyTypes: List<PropertyType> = emptyList(),
+    val moodTags: List<Mood> = emptyList()
+)
 
 @HiltViewModel
 class ManagerPropertyViewModel @Inject constructor(
     state: SavedStateHandle,
     private val videoService: VideoService,
     private val propertyService: PropertyService,
+    private val propertyTypeService: PropertyTypeService,
+    private val moodService: MoodService,
     private val supabaseClient: SupabaseClient,
     private val application: Application
 ) : ViewModel() {
-    val id = state.get<String>("id")
+    private val propertyId = state.get<String>("id")
 
-    private val _uiState = MutableStateFlow(PropertyUiState())
+    private val _uiState = MutableStateFlow(PropertyScreenState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        getProperty()
+        loadInitialData()
+    }
+
+    private fun loadInitialData() {
+        viewModelScope.launch {
+            val propertyType = propertyTypeService.getPropertyTypes()
+            val moods = moodService.getMoods()
+            val property = propertyId?.let {
+                propertyService.getProperty(it)
+            } ?: Property()
+
+            _uiState.update {
+                it.copy(
+                    propertyId = propertyId,
+                    property = property,
+                    propertyTypes = propertyType,
+                    moodTags = moods,
+                )
+            }
+        }
+    }
+
+    fun updateProperty(property: Property, onUpdate: () -> Unit) {
+        viewModelScope.launch {
+            propertyService.updateProperty(property)
+            onUpdate()
+        }
     }
 
     fun upload(uri: Uri, property: Property, video: Video) {
@@ -66,14 +104,5 @@ class ManagerPropertyViewModel @Inject constructor(
         }
     }
 
-    private fun getProperty() {
-        viewModelScope.launch {
-            if (id !== null)
-                propertyService.getProperty(id).let { property ->
-                    _uiState.update { state ->
-                        state.copy(property = property)
-                    }
-                }
-        }
-    }
+
 }

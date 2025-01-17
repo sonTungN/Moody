@@ -21,7 +21,7 @@ fun OwnerAddPropertyScreen(
     AddPropertyForm(
         initialData = uiState.property,
         propertyTypes = dataState.propertyTypes,
-        onCreate = { property -> viewModel.create(property, onCreate) },
+        onSubmit = { property -> viewModel.create(property, onCreate) },
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth(),

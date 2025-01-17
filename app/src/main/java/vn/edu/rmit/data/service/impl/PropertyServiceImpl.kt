@@ -110,6 +110,7 @@ class PropertyServiceImpl @Inject constructor(
             hashMapOf(
                 "name" to property.name,
                 "address" to property.address,
+                "type" to property.type.let { db.collection("property_type").document(it.id) },
                 "geoPoint" to property.geoPoint?.let {
                     GeoPoint(it.latitude, it.longitude)
                 },

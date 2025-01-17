@@ -57,4 +57,5 @@
     <string name="property_mood">Property Moods</string>
     <string name="view_property">View your properties</string>
     <string name="property">Property</string>
+    <string name="edit">Edit</string>
 </resources>

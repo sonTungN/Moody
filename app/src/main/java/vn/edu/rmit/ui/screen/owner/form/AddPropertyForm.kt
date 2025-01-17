@@ -3,7 +3,7 @@ package vn.edu.rmit.ui.screen.owner.form
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -52,7 +51,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.rememberCameraPositionState
 import vn.edu.rmit.R
 import vn.edu.rmit.data.model.Property
@@ -63,12 +61,13 @@ import vn.edu.rmit.ui.screen.user.filter.Emotion
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AddPropertyForm(
+    isMoodTextDisplayed: Boolean = true,
     initialData: Property = Property(),
     propertyTypes: List<PropertyType> = emptyList(),
-    onCreate: (Property) -> Unit,
+    onSubmit: (Property) -> Unit,
     viewModel: AddPropertyFormViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
@@ -78,7 +77,7 @@ fun AddPropertyForm(
     var isClosingHourOpen by remember { mutableStateOf(false) }
 
     val uiState by viewModel.uiState.collectAsState()
-    var selectedEmotions by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var selectedEmotions by remember { mutableStateOf(initialData.moodTags.map { it.id }.toSet()) }
 
     val scrollState = rememberScrollState()
 
@@ -129,7 +128,7 @@ fun AddPropertyForm(
                 scrollState,
                 enabled = !cameraPositionState.isMoving
             )
-            . padding(bottom = 16.dp)
+            .padding(bottom = 8.dp)
     ) {
         OutlinedTextField(
             value = state.name,
@@ -195,9 +194,7 @@ fun AddPropertyForm(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
         Text(stringResource(R.string.property_mood))
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -207,10 +204,13 @@ fun AddPropertyForm(
                 columns = GridCells.Fixed(3),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth(),
+                userScrollEnabled = false
             ) {
                 items(emotions) { emotion ->
                     EmotionCard(
+                        isTextDisplay = isMoodTextDisplayed,
                         emotion = emotion,
                         isSelected = selectedEmotions.contains(emotion.id),
                         onSelect = {
@@ -225,9 +225,7 @@ fun AddPropertyForm(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
         Text(stringResource(R.string.address))
-
         OutlinedTextField(
             value = state.address,
             onValueChange = { state = state.copy(address = it) },
@@ -254,7 +252,7 @@ fun AddPropertyForm(
 
         Button(
             onClick = {
-                onCreate(
+                onSubmit(
                     state.copy(
                         geoPoint = cameraPositionState.position.target,
                         moodTags = uiState.moods.filter { selectedEmotions.contains(it.id) }
@@ -263,7 +261,7 @@ fun AddPropertyForm(
           },
             modifier = Modifier.align(Alignment.End)
         ) {
-            Text(stringResource(R.string.create))
+            Text(stringResource(R.string.submit))
         }
     }
 }
@@ -313,6 +311,6 @@ private fun getMoodIcon(moodId: String): @Composable () -> Unit = {
 @Composable
 fun LocationFormPreview() {
     AddPropertyForm(
-        onCreate = {},
+        onSubmit = {},
     )
 }
