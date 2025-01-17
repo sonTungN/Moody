@@ -12,6 +12,7 @@ data class Property(
     val name: String = "",
     val address: String = "",
     val geoPoint: LatLng? = null,
+    val price: Long = 0,
 
     val image: String = "",
     val videos: List<Video> = emptyList(),
