@@ -1,30 +1,41 @@
 package vn.edu.rmit.ui.screen.user.booking
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stripe.model.PaymentIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import vn.edu.rmit.data.model.Booking
 import vn.edu.rmit.data.model.Profile
 import vn.edu.rmit.data.model.Property
 import vn.edu.rmit.data.service.AccountService
+import vn.edu.rmit.data.service.BookingService
 import vn.edu.rmit.data.service.PropertyService
+import vn.edu.rmit.data.service.StripeService
+import java.time.LocalDate
 import javax.inject.Inject
 
-data class BookingUiState (
+data class BookingUiState(
     val property: Property = Property(),
-    val profile: Profile = Profile()
+    val profile: Profile = Profile(),
+    val paymentIntent: PaymentIntent? = null
 )
 
 @HiltViewModel
 class BookingScreenViewModel @Inject constructor(
     state: SavedStateHandle,
     private val propertyService: PropertyService,
-    private val accountService: AccountService
-): ViewModel() {
+    private val accountService: AccountService,
+    private val bookingService: BookingService,
+    private val stripeService: StripeService
+) : ViewModel() {
     val id = state.get<String>("id")
 
     private val _uiState = MutableStateFlow(BookingUiState())
@@ -57,23 +68,36 @@ class BookingScreenViewModel @Inject constructor(
             }
     }
 
-    fun reserveProperty(propertyId: String) {
+    fun getPaymentIntent(price: Long) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    stripeService.generatePaymentIntent(price).let { intent ->
+                        _uiState.update { state ->
+                            state.copy(paymentIntent = intent)
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("Stripe", "Cannot create payment intent, error: $e")
+                }
+            }
+        }
+    }
+
+    fun reserveProperty(property: Property, startDate: LocalDate, endDate: LocalDate) {
         viewModelScope.launch {
             val userProfile = accountService.getProfile()
-            val updatedBookings = (userProfile?.booking ?: emptyList()) + listOfNotNull(propertyId)
 
-            accountService.getProfile()?.let {
-                accountService.updateProfile(
-                    it.copy(booking = updatedBookings)
+            userProfile?.let {
+                bookingService.addBooking(
+                    Booking(
+                        property = property,
+                        user = userProfile,
+                        startDate = startDate,
+                        endDate = endDate
+                    )
                 )
             }
-
-            val property = propertyService.getProperty(propertyId)
-            val updatedTravelers = (property.travelers + listOfNotNull(userProfile)).distinctBy { it.id }
-
-            propertyService.updateProperty(
-                property.copy(travelers = updatedTravelers)
-            )
         }
     }
 }

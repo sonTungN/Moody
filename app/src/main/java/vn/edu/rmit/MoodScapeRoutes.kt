@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import vn.edu.rmit.ui.screen.LandingScreen
 import vn.edu.rmit.ui.screen.auth.login.LoginScreen
 import vn.edu.rmit.ui.screen.auth.register.RegisterScreen
+import vn.edu.rmit.ui.screen.manager.booking.ManagerBookingScreen
 import vn.edu.rmit.ui.screen.manager.bookings.ManagerBookingsScreen
 import vn.edu.rmit.ui.screen.manager.properties.ManagerPropertiesScreen
 import vn.edu.rmit.ui.screen.manager.property.ManagerPropertyScreen
@@ -22,13 +23,11 @@ import vn.edu.rmit.ui.screen.user.booking.BookingScreen
 import vn.edu.rmit.ui.screen.user.filter.MoodScreen
 import vn.edu.rmit.ui.screen.user.home.HomeScreen
 import vn.edu.rmit.ui.screen.user.location.LocationScreen
-import vn.edu.rmit.ui.screen.user.payment.PaymentScreen
 import vn.edu.rmit.ui.screen.user.property.PropertyScreen
 import vn.edu.rmit.ui.screen.user.property.SavedPropertyScreen
 import vn.edu.rmit.ui.screen.user.reels.SlideVideoPagerScreen
 import vn.edu.rmit.ui.screen.user.reserve.ReserveScreen
 import vn.edu.rmit.ui.screen.user.settings.SettingScreen
-import java.io.Serial
 
 @Serializable
 object AuthenticationRoute
@@ -66,8 +65,6 @@ object ReservationRoute
 @Serializable
 object SavePropertyRoute
 
-@Serializable
-object PaymentRoute
 
 @Serializable
 data class SlideVideoPagerRoute(val selectedMoods: List<String>)
@@ -184,7 +181,7 @@ fun MoodScapeRoutes(
             composable<OwnerAddPropertyRoute> {
                 OwnerAddPropertyScreen(
                     onCreate = {
-                        navController.navigate(OwnerAddPropertyRoute) {
+                        navController.navigate(OwnerPropertyRoute) {
                             popUpTo(OwnerAddPropertyRoute) { inclusive = true }
                         }
                     },
@@ -212,7 +209,7 @@ fun MoodScapeRoutes(
             composable<MoodFilterRoute> {
                 MoodScreen(
                     onSkip = {
-                        navController.navigate(HomeRoute)
+                        navController.navigate(ReservationRoute)
                     },
                     onSelected = { selectedMoodIds ->
                         navController.navigate(SlideVideoPagerRoute(selectedMoodIds))
@@ -254,23 +251,25 @@ fun MoodScapeRoutes(
             composable<PropertyRoute> { backStackEntry ->
                 val route: PropertyRoute = backStackEntry.toRoute()
 
-                PropertyScreen(route.id)
+                PropertyScreen(route.id, onBookingClick = {
+                    navController.navigate(BookingRoute(it))
+                })
             }
 
             composable<BookingRoute> { backStackEntry ->
                 val route: BookingRoute = backStackEntry.toRoute()
                 BookingScreen(
                     route.id,
-                    onReservedClick = { navController.navigate(PaymentRoute) }
+                    paymentComplete = {
+                        navController.navigate(ReservationRoute)
+                    }
                 )
             }
 
             composable<SavePropertyRoute> {
-                SavedPropertyScreen()
-            }
-
-            composable<PaymentRoute> {
-                PaymentScreen()
+                SavedPropertyScreen(onPropertyClick = {
+                    navController.navigate(PropertyRoute(it))
+                })
             }
         }
 
@@ -302,6 +301,8 @@ fun MoodScapeRoutes(
 
             composable<ManagerBookingRoute> { backStackEntry ->
                 val route: ManagerBookingRoute = backStackEntry.toRoute()
+
+                ManagerBookingScreen(id = route.id)
             }
         }
 

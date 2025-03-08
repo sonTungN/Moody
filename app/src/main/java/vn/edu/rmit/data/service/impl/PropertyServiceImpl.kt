@@ -8,7 +8,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import vn.edu.rmit.data.model.Profile
@@ -53,12 +52,12 @@ class PropertyServiceImpl @Inject constructor(
 
         return Property(
             id = document.id,
-            owner = document.getDocumentReference("owner")?.snapshots()?.map {
+            owner = document.getDocumentReference("owner")?.get()?.await()?.let {
                 accountService.documentToProfile(it)
-            }?.first() ?: Profile(),
-            type = document.getDocumentReference("type")?.snapshots()?.map {
+            } ?: Profile(),
+            type = document.getDocumentReference("type")?.get()?.await()?.let {
                 propertyTypeService.documentToPropertyType(it)
-            }?.first() ?: PropertyType(),
+            } ?: PropertyType(),
             name = document.getString("name") ?: "",
             address = document.getString("address") ?: "",
             geoPoint = geoPoint?.let {
@@ -70,14 +69,10 @@ class PropertyServiceImpl @Inject constructor(
             price = document.getLong("price") ?: 0,
             image = document.getString("image") ?: "",
             videos = videos.map { videoDocumentRef ->
-                videoDocumentRef.snapshots().map {
-                    videoService.documentToVideo(it)
-                }.first()
+                videoService.documentToVideo(videoDocumentRef.get().await())
             }.toList(),
             moodTags = moodTags.map { moodTagsDocumentRef ->
-                moodTagsDocumentRef.snapshots().map {
-                    moodService.documentToMood(it)
-                }.first()
+                moodService.documentToMood(moodTagsDocumentRef.get().await())
             }.toList(),
             openingHours = document.getString("opening_hours")?.let {
                 LocalTime.parse(it)
@@ -86,9 +81,7 @@ class PropertyServiceImpl @Inject constructor(
                 LocalTime.parse(it)
             } ?: LocalTime.of(0, 0),
             travelers = travelers.map { travelersDocumentRef ->
-                travelersDocumentRef.snapshots().map {
-                    accountService.documentToProfile(it)
-                }.first()
+                accountService.documentToProfile(travelersDocumentRef.get().await())
             }.toList()
         )
     }
@@ -164,8 +157,8 @@ class PropertyServiceImpl @Inject constructor(
 
         db.collection("profiles").document(property.owner.id)
             .update(
-            "ownedProperties", FieldValue.arrayUnion(id.toString())
-        ).await()
+                "ownedProperties", FieldValue.arrayUnion(id.toString())
+            ).await()
 
         return getProperty(id.toString())
     }
